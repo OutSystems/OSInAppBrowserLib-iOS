@@ -1,3 +1,3 @@
 public protocol OSIABRouter {
-    func openInSafari(_ url: String)
+    func openInSafari(_ url: String) -> Bool
 }

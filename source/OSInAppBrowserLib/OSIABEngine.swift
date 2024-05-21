@@ -5,7 +5,7 @@ public struct OSIABEngine {
         self.router = router
     }
     
-    public func openExternalBrowser(_ url: String) {
+    public func openExternalBrowser(_ url: String) -> Bool {
         self.router.openInSafari(url)
     }
 }
