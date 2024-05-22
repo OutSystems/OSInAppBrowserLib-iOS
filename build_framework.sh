@@ -1,14 +1,11 @@
 BUILD_FOLDER="build"
 BUILD_SCHEME="OSInAppBrowserLib"
 FRAMEWORK_NAME="OSInAppBrowserLib"
-SIMULATOR_ARCHIVE_PATH="../${BUILD_FOLDER}/iphonesimulator.xcarchive"
-IOS_DEVICE_ARCHIVE_PATH="../${BUILD_FOLDER}/iphoneos.xcarchive"
-SOURCE_FOLDER="source"
+SIMULATOR_ARCHIVE_PATH="${BUILD_FOLDER}/iphonesimulator.xcarchive"
+IOS_DEVICE_ARCHIVE_PATH="${BUILD_FOLDER}/iphoneos.xcarchive"
 
 rm -rf "${FRAMEWORK_NAME}.zip"
 rm -rf ${BUILD_FOLDER}
-
-cd "${SOURCE_FOLDER}"
 
 xcodebuild archive \
 	-scheme ${BUILD_SCHEME} \
@@ -31,8 +28,8 @@ xcodebuild -create-xcframework \
 		-debug-symbols "${PWD}/${SIMULATOR_ARCHIVE_PATH}/dSYMs/${FRAMEWORK_NAME}.framework.dSYM" \
 	-framework "./${IOS_DEVICE_ARCHIVE_PATH}/Products/Library/Frameworks/${FRAMEWORK_NAME}.framework" \
 		-debug-symbols "${PWD}/${IOS_DEVICE_ARCHIVE_PATH}/dSYMs/${FRAMEWORK_NAME}.framework.dSYM" \
-	-output "../${BUILD_FOLDER}/${FRAMEWORK_NAME}.xcframework"
+	-output "./${BUILD_FOLDER}/${FRAMEWORK_NAME}.xcframework"
 
-cd "../${BUILD_FOLDER}"
+cd "./${BUILD_FOLDER}"
 
 zip -r - "${FRAMEWORK_NAME}.xcframework" >"${FRAMEWORK_NAME}.zip"
