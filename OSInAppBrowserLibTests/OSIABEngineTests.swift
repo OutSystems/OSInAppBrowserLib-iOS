@@ -2,17 +2,33 @@ import OSInAppBrowserLib
 import XCTest
 
 final class OSIABEngineTests: XCTestCase {
-    func test_open_externalBrowserWithoutIssues_doesOpenSafari() {
-        let url = "https://www.outsystems.com/"
-        XCTAssertTrue(self.makeSUT(shouldOpenSafari: true).openExternalBrowser(url))
+    let url = "https://www.outsystems.com/"
+    
+    // MARK: - Open in External Browser Tests
+    
+    func test_open_externalBrowserWithoutIssues_doesOpen() {
+        let routerSpy = OSIABExternalRouterSpy(shouldOpenSafari: true)
+        makeSUT().openExternalBrowser(url, routerDelegate: routerSpy) { XCTAssertTrue($0) }
     }
     
-    func test_open_externalBrowserWithIssues_doesNotOpenSafari() {
-        let url = "https://www.outsystems.com/"
-        XCTAssertFalse(self.makeSUT(shouldOpenSafari: false).openExternalBrowser(url))
+    func test_open_externalBrowserWithIssues_doesNotOpen() {
+        let routerSpy = OSIABExternalRouterSpy(shouldOpenSafari: false)
+        makeSUT().openExternalBrowser(url, routerDelegate: routerSpy) { XCTAssertFalse($0) }
+    }
+    
+    // MARK: - Open in System Browser Tests
+    
+    func test_open_systemBrowserWithoutIssues_doesOpen() {
+        let routerSpy = OSIABSystemRouterSpy(shouldOpen: UIViewController())
+        makeSUT().openSystemBrowser(url, routerDelegate: routerSpy) { XCTAssertNotNil($0) }
+    }
+    
+    func test_open_systemBrowserWithIssues_doesNotOpen() {
+        let routerSpy = OSIABSystemRouterSpy(shouldOpen: nil)
+        makeSUT().openSystemBrowser(url, routerDelegate: routerSpy) { XCTAssertNil($0) }
     }
 }
 
 private extension OSIABEngineTests {
-    func makeSUT(shouldOpenSafari: Bool) -> OSIABEngine { OSIABEngine(router: OSIABRouterSpy(shouldOpenSafari)) }
+    func makeSUT() -> OSIABEngine<OSIABExternalRouterSpy, OSIABSystemRouterSpy> { .init() }
 }
