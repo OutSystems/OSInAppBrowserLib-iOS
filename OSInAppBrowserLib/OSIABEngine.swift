@@ -17,8 +17,9 @@ where ExternalBrowser.ReturnType == Bool, SystemBrowser.ReturnType == UIViewCont
         routerDelegate: SystemBrowser,
         dismissStyle: OSIABDismissStyle = .defaultValue,
         viewStyle: OSIABViewStyle = .defaultValue,
+        animation: OSIABAnimation = .defaultValue,
         _ completionHandler: @escaping (SystemBrowser.ReturnType) -> Void
     ) {
-        routerDelegate.handleOpen(url, dismissStyle: dismissStyle, viewStyle: viewStyle, completionHandler)
+        routerDelegate.handleOpen(url, dismissStyle: dismissStyle, viewStyle: viewStyle, animation: animation, completionHandler)
     }
 }

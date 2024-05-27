@@ -70,6 +70,28 @@ final class OSIABEngineTests: XCTestCase {
             )
         }
     }
+    
+    // MARK: Animation Tests
+    
+    func test_open_systemBrowserWithNoAnimation_doesOpenUsingDefaultAnimation() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router) {
+            XCTAssertEqual(
+                $0?.modalTransitionStyle, OSIABAnimation.defaultValue.toModalTransitionStyle()
+            )
+        }
+    }
+    
+    func test_open_systemBrowserWithAnimation_doesOpenUsingSpecifiedAnimation() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router, animation: .flipHorizontal) {
+            XCTAssertEqual(
+                $0?.modalTransitionStyle, OSIABAnimation.flipHorizontal.toModalTransitionStyle()
+            )
+        }
+    }
 }
 
 extension OSIABEngineTests {
