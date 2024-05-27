@@ -10,7 +10,8 @@
 		754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */; };
 		754451F22C049B5E003D7361 /* OSSFSafariViewControllerStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */; };
 		754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F52C04AB69003D7361 /* OSIABViewStyle.swift */; };
-		754451FB2C04C76C003D7361 /* OSIABAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451FA2C04C76C003D7361 /* OSIABAnimation.swift */; };
+		754451FB2C04C76C003D7361 /* OSIABAnimationEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */; };
+		754451FD2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451FC2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift */; };
 		756346462C00D6DD00685AA3 /* OSApplicationStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346452C00D6DD00685AA3 /* OSApplicationStub.swift */; };
 		756346482C00DD4700685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346472C00DD4600685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift */; };
 		7563464A2C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346492C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift */; };
@@ -37,7 +38,8 @@
 		754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABDismissStyle.swift; sourceTree = "<group>"; };
 		754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSFSafariViewControllerStub.swift; sourceTree = "<group>"; };
 		754451F52C04AB69003D7361 /* OSIABViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABViewStyle.swift; sourceTree = "<group>"; };
-		754451FA2C04C76C003D7361 /* OSIABAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABAnimation.swift; sourceTree = "<group>"; };
+		754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABAnimationEffect.swift; sourceTree = "<group>"; };
+		754451FC2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABSystemBrowserOptions.swift; sourceTree = "<group>"; };
 		756346452C00D6DD00685AA3 /* OSApplicationStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSApplicationStub.swift; sourceTree = "<group>"; };
 		756346472C00DD4600685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABSafariViewControllerRouterAdapterTests.swift; sourceTree = "<group>"; };
 		756346492C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABApplicationRouterAdapterTests.swift; sourceTree = "<group>"; };
@@ -75,7 +77,8 @@
 			children = (
 				754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */,
 				754451F52C04AB69003D7361 /* OSIABViewStyle.swift */,
-				754451FA2C04C76C003D7361 /* OSIABAnimation.swift */,
+				754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */,
+				754451FC2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -275,7 +278,8 @@
 				754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */,
 				756346642C00F21000685AA3 /* OSIABApplicationRouterAdapter.swift in Sources */,
 				754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */,
-				754451FB2C04C76C003D7361 /* OSIABAnimation.swift in Sources */,
+				754451FB2C04C76C003D7361 /* OSIABAnimationEffect.swift in Sources */,
+				754451FD2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift in Sources */,
 				756346632C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift in Sources */,
 				756346622C00F21000685AA3 /* OSIABRouter.swift in Sources */,
 			);

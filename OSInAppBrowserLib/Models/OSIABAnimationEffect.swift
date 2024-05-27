@@ -1,6 +1,6 @@
 import UIKit
 
-public enum OSIABAnimation: String {
+public enum OSIABAnimationEffect: String {
     case coverVertical = "COVER_VERTICAL"
     case crossDissolve = "CROSS_DISSOLVE"
     case flipHorizontal = "FLIP_HORIZONTAL"
@@ -8,7 +8,7 @@ public enum OSIABAnimation: String {
     public static let defaultValue: Self = .coverVertical
 }
 
-extension OSIABAnimation {
+extension OSIABAnimationEffect {
     func toModalTransitionStyle() -> UIModalTransitionStyle {
         let result: UIModalTransitionStyle
         

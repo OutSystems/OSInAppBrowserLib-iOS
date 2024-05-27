@@ -15,6 +15,7 @@ extension UIApplication: OSIABApplicationDelegate {}
 
 public class OSIABApplicationRouterAdapter: OSIABRouter {
     public typealias ReturnType = Bool
+    public typealias Options = Void
     
     private let application: OSIABApplicationDelegate
     
@@ -22,7 +23,7 @@ public class OSIABApplicationRouterAdapter: OSIABRouter {
         self.application = application
     }
     
-    public func handleOpen(_ urlString: String, dismissStyle: OSIABDismissStyle, viewStyle: OSIABViewStyle, animation: OSIABAnimation, enableBarsCollapsing: Bool, enableReadersMode: Bool, _ completionHandler: @escaping (Bool) -> Void) {
+    public func handleOpen(_ urlString: String, _ options: Options = (), _ completionHandler: @escaping (ReturnType) -> Void) {
         guard let url = URL(string: urlString), self.application.canOpenURL(url) else { return completionHandler(false) }
         self.application.open(url, completionHandler: completionHandler)
     }
