@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */; };
+		754451F22C049B5E003D7361 /* OSSFSafariViewControllerStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */; };
 		756346462C00D6DD00685AA3 /* OSApplicationStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346452C00D6DD00685AA3 /* OSApplicationStub.swift */; };
 		756346482C00DD4700685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346472C00DD4600685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift */; };
 		7563464A2C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346492C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABDismissStyle.swift; sourceTree = "<group>"; };
+		754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSFSafariViewControllerStub.swift; sourceTree = "<group>"; };
 		756346452C00D6DD00685AA3 /* OSApplicationStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSApplicationStub.swift; sourceTree = "<group>"; };
 		756346472C00DD4600685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABSafariViewControllerRouterAdapterTests.swift; sourceTree = "<group>"; };
 		756346492C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABApplicationRouterAdapterTests.swift; sourceTree = "<group>"; };
@@ -92,6 +96,7 @@
 		7575CF632BFCEE6F008F3FD0 /* OSInAppBrowserLib */ = {
 			isa = PBXGroup;
 			children = (
+				754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */,
 				756346612C00F21000685AA3 /* OSIABEngine.swift */,
 				7563465D2C00F21000685AA3 /* OSIABRouter.swift */,
 				7563465E2C00F21000685AA3 /* Router */,
@@ -115,6 +120,7 @@
 			children = (
 				7575CF7F2BFCEEEA008F3FD0 /* OSIABRouterSpy.swift */,
 				756346452C00D6DD00685AA3 /* OSApplicationStub.swift */,
+				754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */,
 			);
 			path = "Helper Files";
 			sourceTree = "<group>";
@@ -253,6 +259,7 @@
 			files = (
 				756346652C00F21000685AA3 /* OSIABEngine.swift in Sources */,
 				756346642C00F21000685AA3 /* OSIABApplicationRouterAdapter.swift in Sources */,
+				754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */,
 				756346632C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift in Sources */,
 				756346622C00F21000685AA3 /* OSIABRouter.swift in Sources */,
 			);
@@ -263,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				756346482C00DD4700685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift in Sources */,
+				754451F22C049B5E003D7361 /* OSSFSafariViewControllerStub.swift in Sources */,
 				7563464A2C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift in Sources */,
 				7575CF812BFCEEEA008F3FD0 /* OSIABRouterSpy.swift in Sources */,
 				756346462C00D6DD00685AA3 /* OSApplicationStub.swift in Sources */,

@@ -1,5 +1,7 @@
-import OSInAppBrowserLib
+import SafariServices
 import XCTest
+
+@testable import OSInAppBrowserLib
 
 final class OSIABEngineTests: XCTestCase {
     let url = "https://www.outsystems.com/"
@@ -27,8 +29,29 @@ final class OSIABEngineTests: XCTestCase {
         let routerSpy = OSIABSystemRouterSpy(shouldOpen: nil)
         makeSUT().openSystemBrowser(url, routerDelegate: routerSpy) { XCTAssertNil($0) }
     }
+    
+    // test dismissStyle
+    
+    func test_open_systemBrowserWithNoDismissStyle_doesOpenUsingDefaultDismissStyle() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router) {
+            XCTAssertEqual(
+                ($0 as? SFSafariViewController)?.dismissButtonStyle, OSIABDismissStyle.defaultValue.toSFSafariViewControllerDismissButtonStyle()
+            )
+        }
+    }
+    
+    func test_open_systemBrowserWithDismissStyle_doesOpenUsingSpecifiedDismissStyle() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router, dismissStyle: .close) {
+            XCTAssertEqual(
+                ($0 as? SFSafariViewController)?.dismissButtonStyle, OSIABDismissStyle.close.toSFSafariViewControllerDismissButtonStyle()
+            )
+        }
+    }
 }
 
-private extension OSIABEngineTests {
+extension OSIABEngineTests {
     func makeSUT() -> OSIABEngine<OSIABExternalRouterSpy, OSIABSystemRouterSpy> { .init() }
+    func makeExternalRouterSpySUT() -> OSIABEngine<OSIABExternalRouterSpy, OSIABSafariViewControllerRouterAdapter> { .init() }
 }

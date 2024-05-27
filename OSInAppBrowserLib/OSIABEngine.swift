@@ -12,7 +12,7 @@ where ExternalBrowser.ReturnType == Bool, SystemBrowser.ReturnType == UIViewCont
         routerDelegate.handleOpen(url, completionHandler)
     }
     
-    public func openSystemBrowser(_ url: String, routerDelegate: SystemBrowser, _ completionHandler: @escaping (SystemBrowser.ReturnType) -> Void) {
-        routerDelegate.handleOpen(url, completionHandler)
+    public func openSystemBrowser(_ url: String, routerDelegate: SystemBrowser, dismissStyle: OSIABDismissStyle = .defaultValue, _ completionHandler: @escaping (SystemBrowser.ReturnType) -> Void) {
+        routerDelegate.handleOpen(url, dismissStyle: dismissStyle, completionHandler)
     }
 }

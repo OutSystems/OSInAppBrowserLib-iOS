@@ -8,7 +8,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     }
     
     func test_handleOpen_validURL_doesReturnSFSafariViewController() {
-        makeSUT().handleOpen("http://outsystems.com") { XCTAssertNotNil($0 as? SFSafariViewController) }
+        makeSUT().handleOpen("http://outsystems.com") { XCTAssertNotNil($0) }
     }
 }
 

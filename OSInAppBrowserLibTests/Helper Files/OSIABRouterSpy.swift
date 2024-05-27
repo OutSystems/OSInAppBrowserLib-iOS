@@ -8,7 +8,7 @@ struct OSIABExternalRouterSpy: OSIABRouter {
         self.shouldOpenSafari = shouldOpenSafari
     }
     
-    func handleOpen(_ url: String, _ completionHandler: @escaping (Bool) -> Void) {
+    func handleOpen(_ url: String, dismissStyle: OSIABDismissStyle, _ completionHandler: @escaping (Bool) -> Void) {
         completionHandler(shouldOpenSafari)
     }
 }
@@ -20,7 +20,7 @@ struct OSIABSystemRouterSpy: OSIABRouter {
         self.shouldOpenSafariViewController = viewController
     }
     
-    func handleOpen(_ url: String, _ completionHandler: @escaping (UIViewController?) -> Void) {
+    func handleOpen(_ url: String, dismissStyle: OSIABDismissStyle, _ completionHandler: @escaping (UIViewController?) -> Void) {
         completionHandler(shouldOpenSafariViewController)
     }
 }
