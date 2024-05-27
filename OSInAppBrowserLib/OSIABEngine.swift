@@ -18,8 +18,11 @@ where ExternalBrowser.ReturnType == Bool, SystemBrowser.ReturnType == UIViewCont
         dismissStyle: OSIABDismissStyle = .defaultValue,
         viewStyle: OSIABViewStyle = .defaultValue,
         animation: OSIABAnimation = .defaultValue,
+        enableBarsCollapsing: Bool = true,
         _ completionHandler: @escaping (SystemBrowser.ReturnType) -> Void
     ) {
-        routerDelegate.handleOpen(url, dismissStyle: dismissStyle, viewStyle: viewStyle, animation: animation, completionHandler)
+        routerDelegate.handleOpen(
+            url, dismissStyle: dismissStyle, viewStyle: viewStyle, animation: animation, enableBarsCollapsing: enableBarsCollapsing, completionHandler
+        )
     }
 }

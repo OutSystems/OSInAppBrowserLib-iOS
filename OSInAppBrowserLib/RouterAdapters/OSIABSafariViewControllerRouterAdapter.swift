@@ -5,9 +5,13 @@ public struct OSIABSafariViewControllerRouterAdapter: OSIABRouter {
     
     public init() {}
     
-    public func handleOpen(_ urlString: String, dismissStyle: OSIABDismissStyle, viewStyle: OSIABViewStyle, animation: OSIABAnimation, _ completionHandler: @escaping (ReturnType) -> Void) {
+    public func handleOpen(_ urlString: String, dismissStyle: OSIABDismissStyle, viewStyle: OSIABViewStyle, animation: OSIABAnimation, enableBarsCollapsing: Bool, _ completionHandler: @escaping (ReturnType) -> Void) {
         guard let url = URL(string: urlString) else { return completionHandler(nil) }
-        let safariViewController = SFSafariViewController(url: url)
+        
+        let configurations = SFSafariViewController.Configuration()
+        configurations.barCollapsingEnabled = enableBarsCollapsing
+        
+        let safariViewController = SFSafariViewController(url: url, configuration: configurations)
         safariViewController.dismissButtonStyle = dismissStyle.toSFSafariViewControllerDismissButtonStyle()
         safariViewController.modalPresentationStyle = viewStyle.toModalPresentationStyle()
         safariViewController.modalTransitionStyle = animation.toModalTransitionStyle()

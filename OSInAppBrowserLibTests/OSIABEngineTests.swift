@@ -92,6 +92,30 @@ final class OSIABEngineTests: XCTestCase {
             )
         }
     }
+    
+    // MARK: Enable Bars Collapsing Tests
+    
+    func test_open_systemBrowserWithNoEnableBarsCollapsingSet_doesOpenWithBarsCollapsing() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router) {
+            XCTAssertEqual(
+                ($0 as? SFSafariViewController)?.configuration.barCollapsingEnabled,
+                true
+            )
+        }
+    }
+    
+    func test_open_systemBrowserDisablingBarsCollapsing_doesOpenWithoutBarsCollapsing() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router, enableBarsCollapsing: false) {
+            XCTAssertEqual(
+                ($0 as? SFSafariViewController)?.configuration.barCollapsingEnabled,
+                false
+            )
+        }
+    }
 }
 
 extension OSIABEngineTests {
