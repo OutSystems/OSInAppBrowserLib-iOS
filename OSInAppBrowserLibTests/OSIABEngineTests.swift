@@ -116,6 +116,30 @@ final class OSIABEngineTests: XCTestCase {
             )
         }
     }
+    
+    // MARK: Enable Readers Mode Tests
+    
+    func test_open_systemBRowserWithNoEnableReadersModeSet_doesNotOpenInReadersMode() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router) {
+            XCTAssertEqual(
+                ($0 as? SFSafariViewController)?.configuration.entersReaderIfAvailable,
+                false
+            )
+        }
+    }
+    
+    func test_open_systemBrowserEnablingReadersMode_doesOpenInReadersMode() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router, enableReadersMode: true) {
+            XCTAssertEqual(
+                ($0 as? SFSafariViewController)?.configuration.entersReaderIfAvailable,
+                true
+            )
+        }
+    }
 }
 
 extension OSIABEngineTests {
