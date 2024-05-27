@@ -30,7 +30,7 @@ final class OSIABEngineTests: XCTestCase {
         makeSUT().openSystemBrowser(url, routerDelegate: routerSpy) { XCTAssertNil($0) }
     }
     
-    // test dismissStyle
+    // MARK: Dismiss Style Tests
     
     func test_open_systemBrowserWithNoDismissStyle_doesOpenUsingDefaultDismissStyle() {
         let router = OSIABSafariViewControllerRouterAdapter()
@@ -46,6 +46,27 @@ final class OSIABEngineTests: XCTestCase {
         makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router, dismissStyle: .close) {
             XCTAssertEqual(
                 ($0 as? SFSafariViewController)?.dismissButtonStyle, OSIABDismissStyle.close.toSFSafariViewControllerDismissButtonStyle()
+            )
+        }
+    }
+    
+    // MARK: View Style Tests
+    
+    func test_open_systemBrowserWithNoViewStyle_doesOpenUsingDefaultViewStyle() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router) {
+            XCTAssertEqual(
+                $0?.modalPresentationStyle, OSIABViewStyle.defaultValue.toModalPresentationStyle()
+            )
+        }
+    }
+    
+    func test_open_systemBrowserWithViewStyle_doesOpenUsingSpecifiedViewStyle() {
+        let router = OSIABSafariViewControllerRouterAdapter()
+        makeExternalRouterSpySUT().openSystemBrowser(url, routerDelegate: router, viewStyle: .pageSheet) {
+            XCTAssertEqual(
+                $0?.modalPresentationStyle, OSIABViewStyle.pageSheet.toModalPresentationStyle()
             )
         }
     }

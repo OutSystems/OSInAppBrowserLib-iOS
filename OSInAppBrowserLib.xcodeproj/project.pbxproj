@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */; };
 		754451F22C049B5E003D7361 /* OSSFSafariViewControllerStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */; };
+		754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F52C04AB69003D7361 /* OSIABViewStyle.swift */; };
 		756346462C00D6DD00685AA3 /* OSApplicationStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346452C00D6DD00685AA3 /* OSApplicationStub.swift */; };
 		756346482C00DD4700685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346472C00DD4600685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift */; };
 		7563464A2C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756346492C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABDismissStyle.swift; sourceTree = "<group>"; };
 		754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSFSafariViewControllerStub.swift; sourceTree = "<group>"; };
+		754451F52C04AB69003D7361 /* OSIABViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABViewStyle.swift; sourceTree = "<group>"; };
 		756346452C00D6DD00685AA3 /* OSApplicationStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSApplicationStub.swift; sourceTree = "<group>"; };
 		756346472C00DD4600685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABSafariViewControllerRouterAdapterTests.swift; sourceTree = "<group>"; };
 		756346492C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABApplicationRouterAdapterTests.swift; sourceTree = "<group>"; };
@@ -66,13 +68,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7563465E2C00F21000685AA3 /* Router */ = {
+		754451F72C04AB78003D7361 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */,
+				754451F52C04AB69003D7361 /* OSIABViewStyle.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7563465E2C00F21000685AA3 /* RouterAdapters */ = {
 			isa = PBXGroup;
 			children = (
 				7563465F2C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift */,
 				756346602C00F21000685AA3 /* OSIABApplicationRouterAdapter.swift */,
 			);
-			path = Router;
+			path = RouterAdapters;
 			sourceTree = "<group>";
 		};
 		7575CF572BFCEE6F008F3FD0 = {
@@ -96,10 +107,10 @@
 		7575CF632BFCEE6F008F3FD0 /* OSInAppBrowserLib */ = {
 			isa = PBXGroup;
 			children = (
-				754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */,
+				754451F72C04AB78003D7361 /* Models */,
 				756346612C00F21000685AA3 /* OSIABEngine.swift */,
 				7563465D2C00F21000685AA3 /* OSIABRouter.swift */,
-				7563465E2C00F21000685AA3 /* Router */,
+				7563465E2C00F21000685AA3 /* RouterAdapters */,
 			);
 			path = OSInAppBrowserLib;
 			sourceTree = "<group>";
@@ -258,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				756346652C00F21000685AA3 /* OSIABEngine.swift in Sources */,
+				754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */,
 				756346642C00F21000685AA3 /* OSIABApplicationRouterAdapter.swift in Sources */,
 				754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */,
 				756346632C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift in Sources */,

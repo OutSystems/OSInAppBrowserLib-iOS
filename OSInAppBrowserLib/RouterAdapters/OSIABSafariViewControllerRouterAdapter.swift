@@ -5,10 +5,11 @@ public struct OSIABSafariViewControllerRouterAdapter: OSIABRouter {
     
     public init() {}
     
-    public func handleOpen(_ urlString: String, dismissStyle: OSIABDismissStyle, _ completionHandler: @escaping (ReturnType) -> Void) {
+    public func handleOpen(_ urlString: String, dismissStyle: OSIABDismissStyle, viewStyle: OSIABViewStyle, _ completionHandler: @escaping (ReturnType) -> Void) {
         guard let url = URL(string: urlString) else { return completionHandler(nil) }
         let safariViewController = SFSafariViewController(url: url)
         safariViewController.dismissButtonStyle = dismissStyle.toSFSafariViewControllerDismissButtonStyle()
+        safariViewController.modalPresentationStyle = viewStyle.toModalPresentationStyle()
         
         completionHandler(safariViewController)
     }
