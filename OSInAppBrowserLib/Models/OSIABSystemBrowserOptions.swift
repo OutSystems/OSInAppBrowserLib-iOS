@@ -11,7 +11,7 @@ public struct OSIABSystemBrowserOptions {
         dismissStyle: OSIABDismissStyle = .defaultValue,
         viewStyle: OSIABViewStyle = .defaultValue,
         animationEffect: OSIABAnimationEffect = .defaultValue,
-        enableBarsCollapsing: Bool = true, 
+        enableBarsCollapsing: Bool = true,
         enableReadersMode: Bool = false
     ) {
         self.dismissStyle = dismissStyle

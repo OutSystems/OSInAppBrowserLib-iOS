@@ -26,7 +26,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     
     func test_handleOpen_withDismissStyle_doesReturnWithSpecifiedDismissStyle() {
         let options = OSIABSystemBrowserOptions.init(dismissStyle: .close)
-        makeSUT().handleOpen(validURL, options) {
+        makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
                 ($0 as? SFSafariViewController)?.dismissButtonStyle, OSIABDismissStyle.close.toSFSafariViewControllerDismissButtonStyle()
             )
@@ -45,7 +45,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     
     func test_handleOpen_withViewStyle_doesReturnWithSpecifiedViewStyle() {
         let options = OSIABSystemBrowserOptions.init(viewStyle: .pageSheet)
-        makeSUT().handleOpen(validURL, options) {
+        makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
                 $0?.modalPresentationStyle, OSIABViewStyle.pageSheet.toModalPresentationStyle()
             )
@@ -64,7 +64,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     
     func test_handleOpen_withAnimationEffect_doesReturnWithSpecifiedAnimationEffect() {
         let options = OSIABSystemBrowserOptions.init(animationEffect: .flipHorizontal)
-        makeSUT().handleOpen(validURL, options) {
+        makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
                 $0?.modalTransitionStyle, OSIABAnimationEffect.flipHorizontal.toModalTransitionStyle()
             )
@@ -83,7 +83,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     
     func test_handleOpen_disableBarsCollapsing_doesReturnWithoutBarsCollapsing() {
         let options = OSIABSystemBrowserOptions.init(enableBarsCollapsing: false)
-        makeSUT().handleOpen(validURL, options) {
+        makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
                 ($0 as? SFSafariViewController)?.configuration.barCollapsingEnabled, false
             )
@@ -102,14 +102,61 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     
     func test_handleOpen_enableReadersMode_doesReturnWithReadersModeEnabled() {
         let options = OSIABSystemBrowserOptions.init(enableReadersMode: true)
-        makeSUT().handleOpen(validURL, options) {
+        makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
                 ($0 as? SFSafariViewController)?.configuration.entersReaderIfAvailable, true
             )
         }
     }
+    
+    // MARK: onBrowserPageLoad Callback Tests
+    
+    func test_handleOpen_withBrowserPageLoadConfigured_eventShouldBeTriggeredWhenLoaded() {
+        let expectation = self.expectation(description: "Trigger onBrowserPageLoad Event")
+        makeSUT(onBrowserPageLoad: { expectation.fulfill() }).handleOpen(validURL) {
+            if let safariViewController = $0 as? SFSafariViewController {
+                safariViewController.delegate?.safariViewController?(safariViewController, didCompleteInitialLoad: true)
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func test_handleOpen_withBrowserPageLoadConfigured_eventShouldNotBeTriggeredWhenNotLoaded() {
+        let expectation = self.expectation(description: "Trigger onBrowserPageLoad Event")
+        expectation.isInverted = true
+        makeSUT(onBrowserPageLoad: { expectation.fulfill() }).handleOpen(validURL) {
+            if let safariViewController = $0 as? SFSafariViewController {
+                safariViewController.delegate?.safariViewController?(safariViewController, didCompleteInitialLoad: false)
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    // MARK: onBrowserClose Callback Tests
+    
+    func test_handleOpen_withBrowserClosedConfigured_eventShouldBeTriggeredWhenClosed() {
+        let expectation = self.expectation(description: "Trigger onBrowserClose Event")
+        makeSUT(onBrowserClosed: { expectation.fulfill() }).handleOpen(validURL) {
+            if let safariViewController = $0 as? SFSafariViewController {
+                safariViewController.delegate?.safariViewControllerDidFinish?(safariViewController)
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
+    
+    func test_handleOpen_withBrowserClosedConfigured_eventShouldBeTriggeredWhenDismiss() {
+        let expectation = self.expectation(description: "Trigger onBrowserClose Event")
+        makeSUT(onBrowserClosed: { expectation.fulfill() }).handleOpen(validURL) {
+            if let presentationController = $0?.presentationController {
+                presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+            }
+        }
+        waitForExpectations(timeout: 1)
+    }
 }
 
 private extension OSIABSafariVCRouterAdapterTests {
-    func makeSUT() -> OSIABSafariViewControllerRouterAdapter { .init() }
+    func makeSUT(_ options: OSIABSystemBrowserOptions = .init(), onBrowserPageLoad: @escaping () -> Void = {}, onBrowserClosed: @escaping () -> Void = {}) -> OSIABSafariViewControllerRouterAdapter {
+        .init(options, onBrowserPageLoad: onBrowserPageLoad, onBrowserClosed: onBrowserClosed)
+    }
 }
