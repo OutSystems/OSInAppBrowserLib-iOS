@@ -34,7 +34,9 @@ public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
 
 extension OSIABSafariViewControllerRouterAdapter: SFSafariViewControllerDelegate {
     public func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
-        if didLoadSuccessfully { self.onBrowserPageLoad() }
+        if didLoadSuccessfully {
+            self.onBrowserPageLoad()
+        }
     }
     
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {

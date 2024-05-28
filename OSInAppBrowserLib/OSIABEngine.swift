@@ -3,7 +3,9 @@ import UIKit
 /// Structure responsible for managing all InAppBrowser interactions.
 public struct OSIABEngine<ExternalBrowser: OSIABRouter, SystemBrowser: OSIABRouter>
 where ExternalBrowser.ReturnType == Bool, SystemBrowser.ReturnType == UIViewController? {
-    public init() {}
+    public init() {
+        // empty constructor
+    }
     
     /// Trigger the external browser to open the passed `url`.
     /// - Parameter url: URL to be opened.

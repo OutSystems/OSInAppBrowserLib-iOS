@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */; };
-		754451F22C049B5E003D7361 /* OSSFSafariViewControllerStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */; };
 		754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F52C04AB69003D7361 /* OSIABViewStyle.swift */; };
 		754451FB2C04C76C003D7361 /* OSIABAnimationEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */; };
 		754451FD2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451FC2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift */; };
@@ -36,7 +35,6 @@
 
 /* Begin PBXFileReference section */
 		754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABDismissStyle.swift; sourceTree = "<group>"; };
-		754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSSFSafariViewControllerStub.swift; sourceTree = "<group>"; };
 		754451F52C04AB69003D7361 /* OSIABViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABViewStyle.swift; sourceTree = "<group>"; };
 		754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABAnimationEffect.swift; sourceTree = "<group>"; };
 		754451FC2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABSystemBrowserOptions.swift; sourceTree = "<group>"; };
@@ -75,10 +73,10 @@
 		754451F72C04AB78003D7361 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */,
-				754451F52C04AB69003D7361 /* OSIABViewStyle.swift */,
 				754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */,
+				754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */,
 				754451FC2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift */,
+				754451F52C04AB69003D7361 /* OSIABViewStyle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -86,8 +84,8 @@
 		7563465E2C00F21000685AA3 /* RouterAdapters */ = {
 			isa = PBXGroup;
 			children = (
-				7563465F2C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift */,
 				756346602C00F21000685AA3 /* OSIABApplicationRouterAdapter.swift */,
+				7563465F2C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift */,
 			);
 			path = RouterAdapters;
 			sourceTree = "<group>";
@@ -137,7 +135,6 @@
 			children = (
 				7575CF7F2BFCEEEA008F3FD0 /* OSIABRouterSpy.swift */,
 				756346452C00D6DD00685AA3 /* OSApplicationStub.swift */,
-				754451F12C049B5E003D7361 /* OSSFSafariViewControllerStub.swift */,
 			);
 			path = "Helper Files";
 			sourceTree = "<group>";
@@ -290,7 +287,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				756346482C00DD4700685AA3 /* OSIABSafariViewControllerRouterAdapterTests.swift in Sources */,
-				754451F22C049B5E003D7361 /* OSSFSafariViewControllerStub.swift in Sources */,
 				7563464A2C00DE1300685AA3 /* OSIABApplicationRouterAdapterTests.swift in Sources */,
 				7575CF812BFCEEEA008F3FD0 /* OSIABRouterSpy.swift in Sources */,
 				756346462C00D6DD00685AA3 /* OSApplicationStub.swift in Sources */,
