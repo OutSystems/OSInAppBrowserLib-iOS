@@ -1,13 +1,21 @@
 import SafariServices
 
+/// Adapter that makes the required calls so that an `SFSafariVieWController` implementation can perform the System Browser routing.
 public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
     public typealias ReturnType = UIViewController?
-    public typealias Options = OSIABSystemBrowserOptions
     
+    /// Object that contains the value to format the visual presentation.
     private let options: OSIABSystemBrowserOptions
+    /// Callback to trigger when the initial page load is performed.
     private let onBrowserPageLoad: () -> Void
+    /// Callback to trigger when the browser is closed.
     private let onBrowserClosed: () -> Void
     
+    /// Constructor method.
+    /// - Parameters:
+    ///   - options: Object that contains the value to format the visual presentation.
+    ///   - onBrowserPageLoad: Callback to trigger when the initial page load is performed.
+    ///   - onBrowserClosed: Callback to trigger when the browser is closed.
     public init(_ options: OSIABSystemBrowserOptions, onBrowserPageLoad: @escaping () -> Void, onBrowserClosed: @escaping () -> Void) {
         self.options = options
         self.onBrowserPageLoad = onBrowserPageLoad
@@ -25,6 +33,7 @@ public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
         safariViewController.dismissButtonStyle = self.options.dismissButtonStyle
         safariViewController.modalPresentationStyle = self.options.modalPresentationStyle
         safariViewController.modalTransitionStyle = self.options.modalTransitionStyle
+        // delegates to performed the configured callbacks.
         safariViewController.delegate = self
         safariViewController.presentationController?.delegate = self
         
@@ -32,6 +41,7 @@ public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
     }
 }
 
+// MARK: - SFSafariViewControllerDelegate implementation
 extension OSIABSafariViewControllerRouterAdapter: SFSafariViewControllerDelegate {
     public func safariViewController(_ controller: SFSafariViewController, didCompleteInitialLoad didLoadSuccessfully: Bool) {
         if didLoadSuccessfully {
@@ -44,6 +54,7 @@ extension OSIABSafariViewControllerRouterAdapter: SFSafariViewControllerDelegate
     }
 }
 
+// MARK: - UIAdaptivePresentationControllerDelegate implementation
 extension OSIABSafariViewControllerRouterAdapter: UIAdaptivePresentationControllerDelegate {
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.onBrowserClosed()

@@ -2,8 +2,8 @@
 public protocol OSIABRouter {
     associatedtype ReturnType
     
-    /// Opens the passed `url` in the Safari app.
+    /// Handles opening the passed `url`.
     /// - Parameter url: URL to be opened.
-    /// - Returns: Indicates if the operation was successful or not.
+    /// - Parameter completionHandler: The callback with the result of opening the url.
     func handleOpen(_ url: String, _ completionHandler: @escaping (ReturnType) -> Void)
 }
