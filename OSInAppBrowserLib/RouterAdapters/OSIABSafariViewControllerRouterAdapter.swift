@@ -33,7 +33,7 @@ public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
         safariViewController.dismissButtonStyle = self.options.dismissButtonStyle
         safariViewController.modalPresentationStyle = self.options.modalPresentationStyle
         safariViewController.modalTransitionStyle = self.options.modalTransitionStyle
-        // delegates to performed the configured callbacks.
+        // delegates to perform the configured callbacks.
         safariViewController.delegate = self
         safariViewController.presentationController?.delegate = self
         

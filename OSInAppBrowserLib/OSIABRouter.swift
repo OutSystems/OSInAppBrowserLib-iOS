@@ -1,4 +1,4 @@
-/// The external browser router object, to be implemented by the objects who trigger the call.
+/// The browser router object, to be implemented by the objects who trigger the call.
 public protocol OSIABRouter {
     associatedtype ReturnType
     
