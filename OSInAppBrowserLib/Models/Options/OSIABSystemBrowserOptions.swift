@@ -1,17 +1,13 @@
 import SafariServices
 
 /// Structure that holds the value that a SystemBrowser (especifically `OSIABSafariViewControllerRouterAdapter`) can use for its visual presentation.
-public struct OSIABSystemBrowserOptions {
+public class OSIABSystemBrowserOptions: OSIABOptions {
     /// The dismiss style to present.
-    private var dismissStyle: OSIABDismissStyle
-    /// The view style to present.
-    private var viewStyle: OSIABViewStyle
-    /// The animation effect for the presentation appearance and dismissal.
-    private var animationEffect: OSIABAnimationEffect
+    private let dismissStyle: OSIABDismissStyle
     /// Indicates if the bars should collapse when scrolling.
-    private(set) var enableBarsCollapsing: Bool
+    let enableBarsCollapsing: Bool
     /// Indicates if the readers mode should be enabled if present.
-    private(set) var enableReadersMode: Bool
+    let enableReadersMode: Bool
     
     /// Constructor method.
     /// - Parameters:
@@ -28,10 +24,9 @@ public struct OSIABSystemBrowserOptions {
         enableReadersMode: Bool = false
     ) {
         self.dismissStyle = dismissStyle
-        self.viewStyle = viewStyle
-        self.animationEffect = animationEffect
         self.enableBarsCollapsing = enableBarsCollapsing
         self.enableReadersMode = enableReadersMode
+        super.init(viewStyle: viewStyle, animationEffect: animationEffect)
     }
 }
 
@@ -40,13 +35,5 @@ extension OSIABSystemBrowserOptions {
     /// The `SFSafariViewController`'s `dismissStyle` equivalent value.
     var dismissButtonStyle: SFSafariViewController.DismissButtonStyle {
         self.dismissStyle.toSFSafariViewControllerDismissButtonStyle()
-    }
-    /// The `SFSafariViewController`'s `modalPresentationStyle` equivalent value.
-    var modalPresentationStyle: UIModalPresentationStyle {
-        self.viewStyle.toModalPresentationStyle()
-    }
-    /// The `SFSafariViewController`'s `modalTransitionStyle` equivalent value.
-    var modalTransitionStyle: UIModalTransitionStyle {
-        self.animationEffect.toModalTransitionStyle()
     }
 }

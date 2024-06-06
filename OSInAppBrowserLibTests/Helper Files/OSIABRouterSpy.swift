@@ -24,3 +24,15 @@ struct OSIABSystemRouterSpy: OSIABRouter {
         completionHandler(shouldOpenSafariViewController)
     }
 }
+
+struct OSIABWebViewRouterSpy: OSIABRouter {
+    var shouldOpenView: UIViewController?
+    
+    init(shouldOpen viewController: UIViewController? = nil) {
+        self.shouldOpenView = viewController
+    }
+    
+    func handleOpen(_ url: String, _ completionHandler: @escaping (UIViewController?) -> Void) {
+        completionHandler(shouldOpenView)
+    }
+}
