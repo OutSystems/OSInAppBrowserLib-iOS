@@ -20,7 +20,7 @@ struct OSIABWebView: View {
                 .disabled(!model.forwardButtonEnabled)
                 
                 Spacer()
-                Text(model.urlAddress)
+                Text(model.addressLabel)
                     .lineLimit(1)
                     .allowsHitTesting(false)
                 Spacer()
@@ -38,11 +38,48 @@ struct OSIABWebView: View {
     }
 }
 
-//#Preview {
-//    OSIABWebView(
-//        .init(
-//            url: .init(string: "https://outsystems.com")!,
-//            callbackHandler: .init(onBrowserClosed: {})
-//        )
-//    )
-//}
+private extension OSIABWebViewModel {
+    convenience init(url: String, closeButtonText: String, onBrowserClosed: @escaping (Bool) -> Void) {
+        self.init(
+            url: .init(string: url)!,
+            closeButtonText: closeButtonText,
+            callbackHandler: .init(
+                onDelegateURL: { _ in },
+                onDelegateAlertController: { _ in },
+                onBrowserPageLoad: {},
+                onBrowserClosed: onBrowserClosed
+            )
+        )
+    }
+}
+
+private struct OSIABTestWebView: View {
+    @State var closeButtonCount = 0
+    private let closeButtonText: String
+    
+    init(closeButtonText: String) {
+        self.closeButtonText = closeButtonText
+    }
+    
+    var body: some View {
+        VStack {
+            OSIABWebView(
+                .init(
+                    url: "https://outsystems.com",
+                    closeButtonText: closeButtonText,
+                    onBrowserClosed: { _ in closeButtonCount += 1 }
+                )
+            )
+            Text("Close Button count: \(closeButtonCount)")
+        }
+    }
+}
+
+#Preview {
+    OSIABTestWebView(closeButtonText: "Close")
+}
+
+#Preview {
+    OSIABTestWebView(closeButtonText: "Open")
+        .preferredColorScheme(.dark)
+}

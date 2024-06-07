@@ -10,19 +10,19 @@ final class OSIABCacheManagerStub: OSIABCacheManager {
         self.sessionCacheWasCleared = sessionCacheWasCleared
     }
     
-    func clearCache(_ completionHandler: @escaping CacheCompletion) {
+    func clearCache(_ completionHandler: CacheCompletion?) {
         self.cacheWasCleared = true
-        completionHandler()
+        completionHandler?()
     }
     
-    func clearSessionCache(_ completionHandler: @escaping CacheCompletion) {
+    func clearSessionCache(_ completionHandler: CacheCompletion?) {
         self.sessionCacheWasCleared = true
-        completionHandler()
+        completionHandler?()
     }
 }
 
 final class OSIABWebsiteDataStoreStub: WKWebsiteDataStore {
-    class func dataStore(numberOfCookiesToAdd: Int = 0, numberOfSessionCookiesToAdd: Int = 0, _ completionHandler: @escaping () -> Void = {}) -> WKWebsiteDataStore {
+    class func dataStore(numberOfCookiesToAdd: Int = 0, numberOfSessionCookiesToAdd: Int = 0, _ completionHandler: @escaping () -> Void) -> WKWebsiteDataStore {
         var cookieArray = [HTTPCookie]()
         if numberOfCookiesToAdd > 0 {
             cookieArray += Array(repeating: OSIABCookieMock(), count: numberOfCookiesToAdd)

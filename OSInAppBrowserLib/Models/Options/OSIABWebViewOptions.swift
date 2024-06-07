@@ -13,6 +13,7 @@ public class OSIABWebViewOptions: OSIABOptions {
     let enableViewportScale: Bool
     let allowInLineMediaPlayback: Bool
     let surpressIncrementalRendering: Bool
+    let customUserAgent: String?
     
     public init(
         showURL: Bool = false,
@@ -23,25 +24,27 @@ public class OSIABWebViewOptions: OSIABOptions {
         closeButtonText: String = "Close",
         toolbarPosition: OSIABToolbarPosition = .defaultValue,
         leftToRight: Bool = false,
-        allowOverScroll: Bool = false,
+        allowOverScroll: Bool = true,
         enableViewportScale: Bool = false,
         allowInLineMediaPlayback: Bool = false,
         surpressIncrementalRendering: Bool = false,
         viewStyle: OSIABViewStyle = .defaultValue, 
-        animationEffect: OSIABAnimationEffect = .defaultValue
+        animationEffect: OSIABAnimationEffect = .defaultValue,
+        customUserAgent: String? = nil
     ) {
         self.showURL = showURL
         self.showToolbar = showToolbar
         self.clearCache = clearCache
         self.clearSessionCache = clearSessionCache
         self.mediaPlaybackRequiresUserAction = mediaPlaybackRequiresUserAction
-        self.closeButtonText = closeButtonText
+        self.closeButtonText = closeButtonText.isEmpty ? "Close" : closeButtonText
         self.toolbarPosition = toolbarPosition
         self.leftToRight = leftToRight
         self.allowOverScroll = allowOverScroll
         self.enableViewportScale = enableViewportScale
         self.allowInLineMediaPlayback = allowInLineMediaPlayback
         self.surpressIncrementalRendering = surpressIncrementalRendering
+        self.customUserAgent = customUserAgent
         super.init(viewStyle: viewStyle, animationEffect: animationEffect)
     }
 }

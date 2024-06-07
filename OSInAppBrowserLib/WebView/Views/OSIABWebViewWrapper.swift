@@ -22,12 +22,3 @@ struct OSIABWebViewWrapper: View {
         }
     }
 }
-
-//#Preview {
-//    OSIABWebViewWrapper(
-//        .init(
-//            url: .init(string: "https://outsystems.com")!,
-//            callbackHandler: .init(onBrowserClosed: {})
-//        )
-//    )
-//}

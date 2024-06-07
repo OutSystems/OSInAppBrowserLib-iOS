@@ -14,7 +14,7 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     @Published private(set) var backButtonEnabled: Bool = true
     @Published private(set) var forwardButtonEnabled: Bool = true
     
-    var urlAddress: String { self.url.absoluteString }
+    @Published private(set) var addressLabel: String
     
     init(
         url: URL,
@@ -23,7 +23,8 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         _ allowsInlineMediaPlayback: Bool = false,
         _ suppressesIncrementalRendering: Bool = false,
         _ scrollViewBounces: Bool = false,
-        _ closeButtonText: String = "Close",
+        _ customUserAgent: String? = nil,
+        closeButtonText: String = "Close",
         callbackHandler: OSIABWebViewCallbackHandler
     ) {
         let configuration = WKWebViewConfiguration()
@@ -36,10 +37,12 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         self.webView = .init(frame: .zero, configuration: configuration)
         self.closeButtonText = closeButtonText
         self.callbackHandler = callbackHandler
+        self.addressLabel = url.absoluteString
         
         super.init()
         
         self.webView.scrollView.bounces = scrollViewBounces
+        self.webView.customUserAgent = customUserAgent
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
         
@@ -55,6 +58,11 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         
         self.webView.publisher(for: \.canGoForward)
             .assign(to: &$forwardButtonEnabled)
+        
+        self.webView.publisher(for: \.url)
+            .compactMap { $0 }
+            .map(\.absoluteString)
+            .assign(to: &$addressLabel)
     }
     
     func loadURL() {
@@ -70,7 +78,7 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     }
     
     func closeButtonPressed() {
-        self.callbackHandler.onBrowserClosed()
+        self.callbackHandler.onBrowserClosed(false)
     }
 }
 

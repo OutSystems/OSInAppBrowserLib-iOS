@@ -55,15 +55,21 @@ final class OSIABViewModelTests: XCTestCase {
         XCTAssertTrue(makeSUT(url, scrollViewBounds: true).webView.scrollView.bounces)
     }
     
+    // MARK: CustomUserAgent Tests
+    func test_createModel_settingCustomUserAgent_setsToSpecifiedValue() {
+        let newUserAgent = "New User Agent"
+        XCTAssertEqual(makeSUT(url, customUserAgent: newUserAgent).webView.customUserAgent, newUserAgent)
+    }
+    
     // MARK: URL Address Tests
     func test_createModel_withURL_urlAddressIsSet() {
-        XCTAssertEqual(makeSUT(url).urlAddress, url.absoluteString)
+        XCTAssertEqual(makeSUT(url).addressLabel, url.absoluteString)
     }
     
     func test_createModel_whenChangingURL_urlAddressIsModified() {
         let sut = makeSUT(url)
         sut.webView(sut.webView, decidePolicyFor: OSIABNavigationActionStub(secondURL)) { _ in }
-        XCTAssertEqual(sut.urlAddress, secondURL.absoluteString)
+        XCTAssertEqual(sut.addressLabel, secondURL.absoluteString)
     }
     
     // MARK: Load URL Tests
@@ -80,9 +86,14 @@ final class OSIABViewModelTests: XCTestCase {
     
     func test_closeButtonPressed_triggersTheBrowserClosedEvent() {
         var closed = false
-        let sut = makeSUT(url, onBrowserClosed: { closed = true })
+        var isBrowserAlreadyClosed = true
+        let sut = makeSUT(url, onBrowserClosed: { param in
+            isBrowserAlreadyClosed = param
+            closed = true
+        })
         sut.closeButtonPressed()
         XCTAssertTrue(closed)
+        XCTAssertFalse(isBrowserAlreadyClosed)
     }
     
     // MARK: Navigation Tests
@@ -201,11 +212,13 @@ private extension OSIABViewModelTests {
         allowsInlineMediaPlayback: Bool = false,
         surpressesIncrementalRendering: Bool = false,
         scrollViewBounds: Bool = false,
+        customUserAgent: String? = nil,
         onDelegateURL: @escaping (URL) -> Void = { _ in },
         onDelegateAlertController: @escaping (UIAlertController) -> Void = { _ in },
         onBrowserPageLoad: @escaping () -> Void = {},
-        onBrowserClosed: @escaping () -> Void = {}
+        onBrowserClosed: @escaping (Bool) -> Void = { _ in }
     ) -> OSIABWebViewModel {
+        
         .init(
             url: url,
             mediaTypesRequiringUserActionForPlayback,
@@ -213,10 +226,11 @@ private extension OSIABViewModelTests {
             allowsInlineMediaPlayback,
             surpressesIncrementalRendering,
             scrollViewBounds,
+            customUserAgent,
             callbackHandler: .init(
-                onDelegateURL,
-                onDelegateAlertController,
-                onBrowserPageLoad,
+                onDelegateURL: onDelegateURL,
+                onDelegateAlertController: onDelegateAlertController,
+                onBrowserPageLoad: onBrowserPageLoad,
                 onBrowserClosed: onBrowserClosed
             )
         )

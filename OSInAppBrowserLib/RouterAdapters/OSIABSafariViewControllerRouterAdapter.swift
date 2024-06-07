@@ -2,7 +2,7 @@ import SafariServices
 
 /// Adapter that makes the required calls so that an `SFSafariVieWController` implementation can perform the System Browser routing.
 public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
-    public typealias ReturnType = UIViewController?
+    public typealias ReturnType = UIViewController
     
     /// Object that contains the value to format the visual presentation.
     private let options: OSIABSystemBrowserOptions
@@ -22,9 +22,7 @@ public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
         self.onBrowserClosed = onBrowserClosed
     }
     
-    public func handleOpen(_ urlString: String, _ completionHandler: @escaping (ReturnType) -> Void) {
-        guard let url = URL(string: urlString) else { return completionHandler(nil) }
-        
+    public func handleOpen(_ url: URL, _ completionHandler: @escaping (ReturnType) -> Void) {
         let configurations = SFSafariViewController.Configuration()
         configurations.barCollapsingEnabled = self.options.enableBarsCollapsing
         configurations.entersReaderIfAvailable =  self.options.enableReadersMode

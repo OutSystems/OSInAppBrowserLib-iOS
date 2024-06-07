@@ -3,11 +3,7 @@ import XCTest
 @testable import OSInAppBrowserLib
 
 final class OSIABWebViewRouterAdapterTests: XCTestCase {
-    let validURL = "http://outsystems.com"
-    
-    func test_handleOpen_invalidURL_doesNotReturnViewController() {
-        makeSUT().handleOpen("https://invalid url") { XCTAssertNil($0) }
-    }
+    let validURL = URL(string: "http://outsystems.com")!
     
     func test_handleOpen_validURL_doesReturnHostingViewController() {
         makeSUT().handleOpen(validURL) { XCTAssertNotNil($0) }
@@ -68,7 +64,7 @@ final class OSIABWebViewRouterAdapterTests: XCTestCase {
     func test_handleOpen_noViewStyle_doesReturnWithDefaultViewStyle() {
         makeSUT().handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalPresentationStyle, OSIABViewStyle.defaultValue.toModalPresentationStyle()
+                $0.modalPresentationStyle, OSIABViewStyle.defaultValue.toModalPresentationStyle()
             )
         }
     }
@@ -77,7 +73,7 @@ final class OSIABWebViewRouterAdapterTests: XCTestCase {
         let options = OSIABWebViewOptions(viewStyle: .pageSheet)
         makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalPresentationStyle, OSIABViewStyle.pageSheet.toModalPresentationStyle()
+                $0.modalPresentationStyle, OSIABViewStyle.pageSheet.toModalPresentationStyle()
             )
         }
     }
@@ -87,7 +83,7 @@ final class OSIABWebViewRouterAdapterTests: XCTestCase {
     func test_handleOpen_noAnimationEffect_doesReturnWithDefaultAnimationEffect() {
         makeSUT().handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalTransitionStyle, OSIABAnimationEffect.defaultValue.toModalTransitionStyle()
+                $0.modalTransitionStyle, OSIABAnimationEffect.defaultValue.toModalTransitionStyle()
             )
         }
     }
@@ -96,7 +92,7 @@ final class OSIABWebViewRouterAdapterTests: XCTestCase {
         let options = OSIABWebViewOptions(animationEffect: .flipHorizontal)
         makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalTransitionStyle, OSIABAnimationEffect.flipHorizontal.toModalTransitionStyle()
+                $0.modalTransitionStyle, OSIABAnimationEffect.flipHorizontal.toModalTransitionStyle()
             )
         }
     }
@@ -104,13 +100,18 @@ final class OSIABWebViewRouterAdapterTests: XCTestCase {
     // MARK: onBrowserClose Callback Tests
     
     func test_handleOpen_withBrowserClosedConfigured_eventShouldBeTriggeredWhenDismissed() {
+        var isBrowserAlreadyClosed = false
         let expectation = self.expectation(description: "Trigger onBrowserClose Event")
-        makeSUT(onBrowserClosed: { _ in expectation.fulfill() }).handleOpen(validURL) {
-            if let presentationController = $0?.presentationController {
+        makeSUT(onBrowserClosed: { param in
+            isBrowserAlreadyClosed = param
+            expectation.fulfill()
+        }).handleOpen(validURL) {
+            if let presentationController = $0.presentationController {
                 presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
             }
         }
         waitForExpectations(timeout: 1)
+        XCTAssertTrue(isBrowserAlreadyClosed)
     }
 }
 
@@ -123,10 +124,12 @@ private extension OSIABWebViewRouterAdapterTests {
         .init(
             options, 
             cacheManager: cacheManager,
-            onDelegateURL: { _ in },
-            onDelegateAlertController: { _ in },
-            onBrowserPageLoad: {},
-            onBrowserClosed: onBrowserClosed
+            callbackHandler: .init(
+                onDelegateURL: { _ in },
+                onDelegateAlertController: { _ in },
+                onBrowserPageLoad: {},
+                onBrowserClosed: onBrowserClosed
+            )
         )
     }
 }

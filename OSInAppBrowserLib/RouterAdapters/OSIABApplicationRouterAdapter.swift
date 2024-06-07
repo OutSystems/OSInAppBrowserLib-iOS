@@ -30,8 +30,8 @@ public class OSIABApplicationRouterAdapter: OSIABRouter {
         self.application = application
     }
     
-    public func handleOpen(_ urlString: String, _ completionHandler: @escaping (ReturnType) -> Void) {
-        guard let url = URL(string: urlString), self.application.canOpenURL(url) else { return completionHandler(false) }
+    public func handleOpen(_ url: URL, _ completionHandler: @escaping (ReturnType) -> Void) {
+        guard self.application.canOpenURL(url) else { return completionHandler(false) }
         self.application.open(url, completionHandler: completionHandler)
     }
 }

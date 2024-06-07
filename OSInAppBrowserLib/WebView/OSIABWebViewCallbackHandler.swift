@@ -1,16 +1,16 @@
 import UIKit
 
-struct OSIABWebViewCallbackHandler {
+public struct OSIABWebViewCallbackHandler {
     let onDelegateURL: (URL) -> Void
     let onDelegateAlertController: (UIAlertController) -> Void
     let onBrowserPageLoad: () -> Void
-    let onBrowserClosed: () -> Void
+    let onBrowserClosed: (Bool) -> Void
     
-    init(
-        _ onDelegateURL: @escaping (URL) -> Void,
-        _ onDelegateAlertController: @escaping (UIAlertController) -> Void,
-        _ onBrowserPageLoad: @escaping () -> Void,
-        onBrowserClosed: @escaping () -> Void
+    public init(
+        onDelegateURL: @escaping (URL) -> Void,
+        onDelegateAlertController: @escaping (UIAlertController) -> Void,
+        onBrowserPageLoad: @escaping () -> Void,
+        onBrowserClosed: @escaping (Bool) -> Void // boolean indicates if the browser is already closed.
     ) {
         self.onDelegateURL = onDelegateURL
         self.onDelegateAlertController = onDelegateAlertController

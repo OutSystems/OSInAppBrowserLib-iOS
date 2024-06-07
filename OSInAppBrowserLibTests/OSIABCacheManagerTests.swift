@@ -17,7 +17,7 @@ final class OSIABCacheManagerTests: XCTestCase {
         }
         wait(for: [fetchFilledDataStore])
         
-        let sut = OSIABBrowserCacheManager(websiteDataStore)
+        let sut = OSIABBrowserCacheManager(dataStore: websiteDataStore)
         let cacheCleared = self.expectation(description: "Clearing cache")
         sut.clearCache {
             cacheCleared.fulfill()
@@ -46,7 +46,7 @@ final class OSIABCacheManagerTests: XCTestCase {
         }
         wait(for: [fetchFilledDataStore])
         
-        let sut = OSIABBrowserCacheManager(websiteDataStore)
+        let sut = OSIABBrowserCacheManager(dataStore: websiteDataStore)
         let cacheCleared = self.expectation(description: "Clearing cache")
         sut.clearCache {
             cacheCleared.fulfill()
@@ -76,7 +76,7 @@ final class OSIABCacheManagerTests: XCTestCase {
         }
         wait(for: [fetchFilledDataStore])
         
-        let sut = OSIABBrowserCacheManager(websiteDataStore)
+        let sut = OSIABBrowserCacheManager(dataStore: websiteDataStore)
         let cacheCleared = self.expectation(description: "Clearing session cache")
         sut.clearSessionCache {
             cacheCleared.fulfill()
@@ -105,7 +105,7 @@ final class OSIABCacheManagerTests: XCTestCase {
         }
         wait(for: [fetchFilledDataStore])
         
-        let sut = OSIABBrowserCacheManager(websiteDataStore)
+        let sut = OSIABBrowserCacheManager(dataStore: websiteDataStore)
         let cacheCleared = self.expectation(description: "Clearing session cache")
         sut.clearSessionCache {
             cacheCleared.fulfill()

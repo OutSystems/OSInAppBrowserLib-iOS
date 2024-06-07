@@ -2,7 +2,7 @@ import OSInAppBrowserLib
 import XCTest
 
 final class OSIABApplicationRouterAdapterTests: XCTestCase {
-    let url = "https://www.outsystems.com/"
+    let url = URL(string: "https://www.outsystems.com/")!
     
     func test_handleOpen_withInvalidURL_returnsFalse() {
         let sut = makeSUT(useValidURL: false)
