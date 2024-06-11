@@ -3,7 +3,7 @@ import SafariServices
 import XCTest
 
 final class OSIABEngineTests: XCTestCase {
-    let url = "https://www.outsystems.com/"
+    let url = URL(string: "https://www.outsystems.com/")!
     
     // MARK: - Open in External Browser Tests
     
@@ -24,12 +24,14 @@ final class OSIABEngineTests: XCTestCase {
         makeSUT().openSystemBrowser(url, routerDelegate: routerSpy) { XCTAssertNotNil($0) }
     }
     
-    func test_open_systemBrowserWithIssues_doesNotOpen() {
-        let routerSpy = OSIABSystemRouterSpy(shouldOpen: nil)
-        makeSUT().openSystemBrowser(url, routerDelegate: routerSpy) { XCTAssertNil($0) }
+    // MARK: - Open in Web View Tests
+    
+    func test_open_webViewWithoutIssues_doesOpen() {
+        let routerSpy = OSIABWebViewRouterSpy(shouldOpen: UIViewController())
+        makeSUT().openWebView(url, routerDelegate: routerSpy) { XCTAssertNotNil($0) }
     }
 }
 
 extension OSIABEngineTests {
-    func makeSUT() -> OSIABEngine<OSIABExternalRouterSpy, OSIABSystemRouterSpy> { .init() }   
+    func makeSUT() -> OSIABEngine<OSIABExternalRouterSpy, OSIABSystemRouterSpy, OSIABWebViewRouterSpy> { .init() }
 }

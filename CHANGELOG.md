@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Features
+- Add `OpenInWebView`'s event listeners (https://outsystemsrd.atlassian.net/browse/RMET-3430).
+- Add `OpenInWebView`'s features (https://outsystemsrd.atlassian.net/browse/RMET-3425).
 - Add `OpenInSystemBrowser`'s event listeners (https://outsystemsrd.atlassian.net/browse/RMET-3429).
 - Add `OpenInSystemBrowser`'s features (https://outsystemsrd.atlassian.net/browse/RMET-3423).
 - Add `OpenInExternalBrowser` (https://outsystemsrd.atlassian.net/browse/RMET-3421).

@@ -4,11 +4,7 @@ import XCTest
 @testable import OSInAppBrowserLib
 
 final class OSIABSafariVCRouterAdapterTests: XCTestCase {
-    let validURL = "http://outsystems.com"
-    
-    func test_handleOpen_invalidURL_doesNotReturnViewController() {
-        makeSUT().handleOpen("https://invalid url") { XCTAssertNil($0) }
-    }
+    let validURL = URL(string: "http://outsystems.com")!
     
     func test_handleOpen_validURL_doesReturnSFSafariViewController() {
         makeSUT().handleOpen(validURL) { XCTAssertNotNil($0) }
@@ -38,7 +34,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     func test_handleOpen_noViewStyle_doesReturnWithDefaultViewStyle() {
         makeSUT().handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalPresentationStyle, OSIABViewStyle.defaultValue.toModalPresentationStyle()
+                $0.modalPresentationStyle, OSIABViewStyle.defaultValue.toModalPresentationStyle()
             )
         }
     }
@@ -47,7 +43,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
         let options = OSIABSystemBrowserOptions.init(viewStyle: .pageSheet)
         makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalPresentationStyle, OSIABViewStyle.pageSheet.toModalPresentationStyle()
+                $0.modalPresentationStyle, OSIABViewStyle.pageSheet.toModalPresentationStyle()
             )
         }
     }
@@ -57,7 +53,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     func test_handleOpen_noAnimationEffect_doesReturnWithDefaultAnimationEffect() {
         makeSUT().handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalTransitionStyle, OSIABAnimationEffect.defaultValue.toModalTransitionStyle()
+                $0.modalTransitionStyle, OSIABAnimationEffect.defaultValue.toModalTransitionStyle()
             )
         }
     }
@@ -66,7 +62,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
         let options = OSIABSystemBrowserOptions.init(animationEffect: .flipHorizontal)
         makeSUT(options).handleOpen(validURL) {
             XCTAssertEqual(
-                $0?.modalTransitionStyle, OSIABAnimationEffect.flipHorizontal.toModalTransitionStyle()
+                $0.modalTransitionStyle, OSIABAnimationEffect.flipHorizontal.toModalTransitionStyle()
             )
         }
     }
@@ -147,7 +143,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     func test_handleOpen_withBrowserClosedConfigured_eventShouldBeTriggeredWhenDismiss() {
         let expectation = self.expectation(description: "Trigger onBrowserClose Event")
         makeSUT(onBrowserClosed: { expectation.fulfill() }).handleOpen(validURL) {
-            if let presentationController = $0?.presentationController {
+            if let presentationController = $0.presentationController {
                 presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
             }
         }
