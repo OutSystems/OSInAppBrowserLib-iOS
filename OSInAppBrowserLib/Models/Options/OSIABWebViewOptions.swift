@@ -3,9 +3,9 @@ import WebKit
 /// Structure that holds the value that a WebView (especifically `OSIABWebViewRouterAdapter`) can use for its visual presentation.
 public class OSIABWebViewOptions: OSIABOptions {
     /// Indicates if the URL should be displayed.
-    private let showURL: Bool
+    let showURL: Bool
     /// Indicates if the toolbar should be displayed.
-    private let showToolbar: Bool
+    let showToolbar: Bool
     /// Indicates if the browser's cookie cache should be cleared before the new window is opened.
     let clearCache: Bool
     /// Indicates if the session cookie cache should be cleared before the new window is opened.
@@ -15,9 +15,11 @@ public class OSIABWebViewOptions: OSIABOptions {
     /// Sets the text to display on the Close button.
     let closeButtonText: String
     /// Sets the position to display the Toolbar.
-    private let toolbarPosition: OSIABToolbarPosition
+    let toolbarPosition: OSIABToolbarPosition
+    /// Indicates if the navigations should be displayed on the toolbar.
+    let showNavigationButtons: Bool
     /// Indicates the positions of the navigation buttons and the close button - which one is on the left and on the right.
-    private let leftToRight: Bool
+    let leftToRight: Bool
     /// Indicates if the WebView's bounce property should be enabled.
     let allowOverScroll: Bool
     /// Indicates if scaling through a meta tag should be prevented.
@@ -31,13 +33,14 @@ public class OSIABWebViewOptions: OSIABOptions {
     
     /// Constructor method.
     /// - Parameters:
-    ///   - showURL: Indicates if the URL should be displayed. `false` is provided in case of no value.
+    ///   - showURL: Indicates if the URL should be displayed. `true` is provided in case of no value.
     ///   - showToolbar: Indicates if the toolbar should be displayed. `true` is provided in case of no value.
     ///   - clearCache: Indicates if the browser's cookie cache should be cleared before the new window is opened. `true` is provided in case of no value.
     ///   - clearSessionCache: Indicates if the session cookie cache should be cleared before the new window is opened. `true` is provided in case of no value.
     ///   - mediaPlaybackRequiresUserAction: Indicates if HTML5 audio or video should be prevented from being autoplayed. `false` is provided in case of no value.
     ///   - closeButtonText: Sets the text to display on the Close button. `Close` is provided in case of no value or empty text.
     ///   - toolbarPosition: Sets the position to display the Toolbar. `defaultValue` is provided in case of no value.
+    ///   - showNavigationButtons: Indicates if the navigations should be displayed on the toolbar. `true` is provided in case of no value.
     ///   - leftToRight: Indicates the positions of the navigation buttons and the close button - which one is on the left and on the right. `false` is provided in case of no value.
     ///   - allowOverScroll: Indicates if the WebView's bounce property should be enabled. `true` is provided in case of no value.
     ///   - enableViewportScale: Indicates if scaling through a meta tag should be prevented. `false` is provided in case of no value.
@@ -47,13 +50,14 @@ public class OSIABWebViewOptions: OSIABOptions {
     ///   - animationEffect: The animation effect for the presentation appearance and dismissal. `defaultValue` is provided in case of no value.
     ///   - customUserAgent: Sets a custom user agent for the WebView.`
     public init(
-        showURL: Bool = false,
+        showURL: Bool = true,
         showToolbar: Bool = true,
         clearCache: Bool = true,
         clearSessionCache: Bool = true,
         mediaPlaybackRequiresUserAction: Bool = false,
         closeButtonText: String = "Close",
         toolbarPosition: OSIABToolbarPosition = .defaultValue,
+        showNavigationButtons: Bool = true,
         leftToRight: Bool = false,
         allowOverScroll: Bool = true,
         enableViewportScale: Bool = false,
@@ -70,6 +74,7 @@ public class OSIABWebViewOptions: OSIABOptions {
         self.mediaPlaybackRequiresUserAction = mediaPlaybackRequiresUserAction
         self.closeButtonText = closeButtonText.isEmpty ? "Close" : closeButtonText
         self.toolbarPosition = toolbarPosition
+        self.showNavigationButtons = showNavigationButtons
         self.leftToRight = leftToRight
         self.allowOverScroll = allowOverScroll
         self.enableViewportScale = enableViewportScale

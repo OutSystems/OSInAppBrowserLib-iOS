@@ -13,41 +13,72 @@ struct OSIABWebView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: model.backButtonPressed, label: {
-                    Image(systemName: "chevron.backward")
-                })
-                .disabled(!model.backButtonEnabled)
-                Button(action: model.forwardButtonPressed, label: {
-                    Image(systemName: "chevron.forward")
-                })
-                .disabled(!model.forwardButtonEnabled)
-                
-                Spacer()
-                Text(model.addressLabel)
-                    .lineLimit(1)
-                    .allowsHitTesting(false)
-                Spacer()
-                
-                Button(action: model.closeButtonPressed, label: {
-                    Text(model.closeButtonText)
-                })
+            if let toolbarPosition = model.toolbarPosition {
+                HStack {
+                    if toolbarPosition == .top {
+                        OSIABNavigationView(
+                            showNavigationButtons: model.showNavigationButtons,
+                            backButtonPressed: model.backButtonPressed,
+                            backButtonEnabled: model.backButtonEnabled,
+                            forwardButtonPressed: model.forwardButtonPressed,
+                            forwardButtonEnabled: model.forwardButtonEnabled,
+                            addressLabel: model.addressLabel,
+                            addressLabelAlignment: model.showNavigationButtons ? .center : .leading
+                        )
+                    }
+                    Spacer()
+                    
+                    Button(action: model.closeButtonPressed, label: {
+                        Text(model.closeButtonText)
+                    })
+                }
+                .padding()
             }
-            .padding()
             OSIABWebViewRepresentable(model.webView)
+            if model.toolbarPosition == .bottom {
+                OSIABNavigationView(
+                    showNavigationButtons: model.showNavigationButtons,
+                    backButtonPressed: model.backButtonPressed,
+                    backButtonEnabled: model.backButtonEnabled,
+                    forwardButtonPressed: model.forwardButtonPressed,
+                    forwardButtonEnabled: model.forwardButtonEnabled,
+                    addressLabel: model.addressLabel,
+                    addressLabelAlignment: model.showNavigationButtons ? .trailing : .center
+                )
+                .padding()
+            }
         }
         .onAppear(perform: {
             model.loadURL()
         })
+        .environment(\.layoutDirection, model.leftToRight ? .leftToRight : .rightToLeft)
     }
 }
 
 // MARK: - OSIABViewModel's constructor accelerator.
 private extension OSIABWebViewModel {
-    convenience init(url: String, closeButtonText: String, onBrowserClosed: @escaping (Bool) -> Void) {
+    convenience init(
+        url: String,
+        showURL: Bool, 
+        showToolbar: Bool,
+        toolbarPosition: OSIABToolbarPosition,
+        showNavigationButtons: Bool,
+        leftToRight: Bool,
+        closeButtonText: String,
+        onBrowserClosed: @escaping (Bool) -> Void
+    ) {
+        let configurationModel = OSIABWebViewConfigurationModel()
         self.init(
             url: .init(string: url)!,
-            closeButtonText: closeButtonText,
+            configurationModel.toWebViewConfiguration(),
+            uiModel: .init(
+                showURL: showURL,
+                showToolbar: showToolbar,
+                toolbarPosition: toolbarPosition,
+                showNavigationButtons: showNavigationButtons,
+                leftToRight: leftToRight,
+                closeButtonText: closeButtonText
+            ),
             callbackHandler: .init(
                 onDelegateURL: { _ in },
                 onDelegateAlertController: { _ in },
@@ -60,11 +91,28 @@ private extension OSIABWebViewModel {
 
 // MARK: - Preview Helper View
 private struct OSIABTestWebView: View {
-    @State var closeButtonCount = 0
+    @State private var closeButtonCount = 0
     private let closeButtonText: String
+    private let showURL: Bool
+    private let showToolbar: Bool
+    private let toolbarPosition: OSIABToolbarPosition
+    private let showNavigationButtons: Bool
+    private let leftToRight: Bool
     
-    init(closeButtonText: String) {
+    init(
+        closeButtonText: String = "Close",
+        showURL: Bool = true,
+        showToolbar: Bool = true,
+        toolbarPosition: OSIABToolbarPosition = .defaultValue,
+        showNavigationButtons: Bool = true,
+        leftToRight: Bool = false
+    ) {
         self.closeButtonText = closeButtonText
+        self.showURL = showURL
+        self.showToolbar = showToolbar
+        self.toolbarPosition = toolbarPosition
+        self.showNavigationButtons = showNavigationButtons
+        self.leftToRight = leftToRight
     }
     
     var body: some View {
@@ -72,6 +120,11 @@ private struct OSIABTestWebView: View {
             OSIABWebView(
                 .init(
                     url: "https://outsystems.com",
+                    showURL: showURL,
+                    showToolbar: showToolbar,
+                    toolbarPosition: toolbarPosition,
+                    showNavigationButtons: showNavigationButtons,
+                    leftToRight: leftToRight,
                     closeButtonText: closeButtonText,
                     onBrowserClosed: { _ in closeButtonCount += 1 }
                 )
@@ -81,11 +134,138 @@ private struct OSIABTestWebView: View {
     }
 }
 
-#Preview {
-    OSIABTestWebView(closeButtonText: "Close")
+// MARK: - Default Views
+
+#Preview("Default - Light Mode") {
+    OSIABTestWebView()
 }
 
-#Preview {
-    OSIABTestWebView(closeButtonText: "Open")
+#Preview("Default - Dark Mode") {
+    OSIABTestWebView()
         .preferredColorScheme(.dark)
+}
+
+// MARK: - Custom Close Button View
+
+#Preview("Custom Close Button Text") {
+    OSIABTestWebView(
+        closeButtonText: "Done"
+    )
+}
+
+// MARK: - No Toolbar View
+
+#Preview("No Toolbar") {
+    OSIABTestWebView(
+        showToolbar: false
+    )
+}
+
+// MARK: - Custom Views
+
+#Preview("No URL and No Navigation Buttons") {
+    OSIABTestWebView(
+        showURL: false, 
+        showNavigationButtons: false
+    )
+}
+
+#Preview("No URL, No Navigation Buttons and Left-to-Right") {
+    OSIABTestWebView(
+        showURL: false, 
+        showNavigationButtons: false,
+        leftToRight: true
+    )
+}
+
+#Preview("No URL") {
+    OSIABTestWebView(
+        showURL: false
+    )
+}
+
+#Preview("No URL and Left-To-Right") {
+    OSIABTestWebView(
+        showURL: false, 
+        leftToRight: true
+    )
+}
+
+#Preview("No URL, Bottom Toolbar and No Navigation Buttons") {
+    OSIABTestWebView(
+        showURL: false, 
+        toolbarPosition: .bottom,
+        showNavigationButtons: false
+    )
+}
+
+#Preview("No URL, Bottom Toolbar, No Navigation Buttons and Left-to-Right") {
+    OSIABTestWebView(
+        showURL: false, 
+        toolbarPosition: .bottom,
+        showNavigationButtons: false, 
+        leftToRight: true
+    )
+}
+
+#Preview("No URL and Bottom Toolbar") {
+    OSIABTestWebView(
+        showURL: false,
+        toolbarPosition: .bottom
+    )
+}
+
+#Preview("No URL, Bottom Toolbar and Left-to-Right") {
+    OSIABTestWebView(
+        showURL: false,
+        toolbarPosition: .bottom,
+        leftToRight: true
+    )
+}
+
+#Preview("No Navigation Buttons") {
+    OSIABTestWebView(
+        showNavigationButtons: false
+    )
+}
+
+#Preview("No Navigation Buttons and Left-to-Right") {
+    OSIABTestWebView(
+        showNavigationButtons: false,
+        leftToRight: true
+    )
+}
+
+#Preview("Left-to-Right") {
+    OSIABTestWebView(
+        leftToRight: true
+    )
+}
+
+#Preview("Bottom Toolbar and No Navigation Buttons") {
+    OSIABTestWebView(
+        toolbarPosition: .bottom, 
+        showNavigationButtons: false
+    )
+}
+
+#Preview("Bottom Toolbar, No Navigation Buttons and Left-to-Right") {
+    OSIABTestWebView(
+        toolbarPosition: .bottom,
+        showNavigationButtons: false,
+        leftToRight: true
+    )
+}
+
+#Preview("Bottom Toolbar") {
+    OSIABTestWebView(
+        toolbarPosition: .bottom
+    )
+}
+
+#Preview("Bottom Toolbar and Left-to-Right") {
+    OSIABTestWebView(
+        toolbarPosition: .bottom,
+        leftToRight: true
+    )
 }

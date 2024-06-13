@@ -34,15 +34,26 @@ public class OSIABWebViewRouterAdapter: NSObject, OSIABRouter {
             self.cacheManager.clearSessionCache()
         }
         
-        let viewModel = OSIABWebViewModel(
-            url: url,
+        let configurationModel = OSIABWebViewConfigurationModel(
             self.options.mediaTypesRequiringUserActionForPlayback,
             self.options.enableViewportScale,
             self.options.allowInLineMediaPlayback,
-            self.options.surpressIncrementalRendering,
+            self.options.surpressIncrementalRendering
+        )
+        let uiModel = OSIABWebViewUIModel(
+            showURL: self.options.showURL,
+            showToolbar: self.options.showToolbar,
+            toolbarPosition: self.options.toolbarPosition,
+            showNavigationButtons: self.options.showNavigationButtons,
+            leftToRight: self.options.leftToRight,
+            closeButtonText: self.options.closeButtonText
+        )
+        let viewModel = OSIABWebViewModel(
+            url: url,
+            configurationModel.toWebViewConfiguration(),
             self.options.allowOverScroll,
             self.options.customUserAgent,
-            closeButtonText: self.options.closeButtonText,
+            uiModel: uiModel,
             callbackHandler: self.callbackHandler
         )
         let hostingController = UIHostingController(rootView: OSIABWebViewWrapper(viewModel))

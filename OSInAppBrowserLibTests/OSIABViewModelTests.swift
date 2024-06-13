@@ -61,15 +61,69 @@ final class OSIABViewModelTests: XCTestCase {
         XCTAssertEqual(makeSUT(url, customUserAgent: newUserAgent).webView.customUserAgent, newUserAgent)
     }
     
-    // MARK: URL Address Tests
-    func test_createModel_withURL_urlAddressIsSet() {
+    // MARK: ShowURL Tests
+    func test_createModel_noShowURL_setsAddressLabel() {
         XCTAssertEqual(makeSUT(url).addressLabel, url.absoluteString)
     }
+    
+    func test_createModel_setShowURLToFalse_addressLabelNotSet() {
+        XCTAssertEqual(makeSUT(url, showURL: false).addressLabel, "")
+    }
+    
+    // MARK: ShowToolbar Tests
+    func test_createModel_noShowToolbar_setsToolbarPositionValue() {
+        XCTAssertNotNil(makeSUT(url).toolbarPosition)
+    }
+    
+    func test_createModel_setsShowToolbarToFalse_toolbarPositionValueShouldBeNil() {
+        XCTAssertNil(makeSUT(url, showToolbar: false).toolbarPosition)
+    }
+    
+    // MARK: ToolbarPosition Tests
+    func test_createModel_noToolbarPosition_setsToDefault() {
+        XCTAssertEqual(makeSUT(url).toolbarPosition, OSIABToolbarPosition.defaultValue)
+    }
+    
+    func test_createModel_setsToolbarPosition_setsToSpecificValue() {
+        XCTAssertEqual(makeSUT(url, toolbarPosition: .bottom).toolbarPosition, OSIABToolbarPosition.bottom)
+    }
+    
+    // MARK: ShowNavigationButtons Tests
+    func test_createModel_noShowNavigationButtons_setsToDefault() {
+        XCTAssertTrue(makeSUT(url).showNavigationButtons)
+    }
+    
+    func test_createModel_disablesShowNavigationButtons_setsToFalse() {
+        XCTAssertFalse(makeSUT(url, showNavigationButtons: false).showNavigationButtons)
+    }
+    
+    // MARK: LeftToRight Tests
+    func test_createModel_noLeftToRighthowNavigationButtons_setsToDefault() {
+        XCTAssertFalse(makeSUT(url).leftToRight)
+    }
+    
+    func test_createModel_enablesLeftToRight_setsToTrue() {
+        XCTAssertTrue(makeSUT(url, leftToRight: true).leftToRight)
+    }
+    
+    // MARK: URL Address Tests
     
     func test_createModel_whenChangingURL_urlAddressIsModified() {
         let sut = makeSUT(url)
         sut.webView(sut.webView, decidePolicyFor: OSIABNavigationActionStub(secondURL)) { _ in }
         XCTAssertEqual(sut.addressLabel, secondURL.absoluteString)
+    }
+    
+    func test_createModel_withShowURLSetToFalse_whenChangingURL_urlAddressIsNotSet() {
+        let sut = makeSUT(url, showURL: false)
+        sut.webView(sut.webView, decidePolicyFor: OSIABNavigationActionStub(secondURL)) { _ in }
+        XCTAssertEqual(sut.addressLabel, "")
+    }
+    
+    func test_createModel_withShowToolbarSetToFalse_whenChangingURL_urlAddressIsNotSet() {
+        let sut = makeSUT(url, showToolbar: false)
+        sut.webView(sut.webView, decidePolicyFor: OSIABNavigationActionStub(secondURL)) { _ in }
+        XCTAssertEqual(sut.addressLabel, "")
     }
     
     // MARK: Load URL Tests
@@ -213,20 +267,32 @@ private extension OSIABViewModelTests {
         surpressesIncrementalRendering: Bool = false,
         scrollViewBounds: Bool = false,
         customUserAgent: String? = nil,
+        showURL: Bool = true,
+        showToolbar: Bool = true,
+        toolbarPosition: OSIABToolbarPosition = .defaultValue,
+        showNavigationButtons: Bool = true,
+        leftToRight: Bool = false,
         onDelegateURL: @escaping (URL) -> Void = { _ in },
         onDelegateAlertController: @escaping (UIAlertController) -> Void = { _ in },
         onBrowserPageLoad: @escaping () -> Void = {},
         onBrowserClosed: @escaping (Bool) -> Void = { _ in }
     ) -> OSIABWebViewModel {
+        let configurationModel = OSIABWebViewConfigurationModel(
+            mediaTypesRequiringUserActionForPlayback, ignoresViewportScaleLimits, allowsInlineMediaPlayback, surpressesIncrementalRendering
+        )
         
-        .init(
+        return .init(
             url: url,
-            mediaTypesRequiringUserActionForPlayback,
-            ignoresViewportScaleLimits,
-            allowsInlineMediaPlayback,
-            surpressesIncrementalRendering,
+            configurationModel.toWebViewConfiguration(),
             scrollViewBounds,
             customUserAgent,
+            uiModel: .init(
+                showURL: showURL,
+                showToolbar: showToolbar,
+                toolbarPosition: toolbarPosition,
+                showNavigationButtons: showNavigationButtons,
+                leftToRight: leftToRight
+            ),
             callbackHandler: .init(
                 onDelegateURL: onDelegateURL,
                 onDelegateAlertController: onDelegateAlertController,

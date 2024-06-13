@@ -18,11 +18,42 @@ struct OSIABWebViewWrapper: View {
                     .foregroundColor(.pink)
             } else {
                 OSIABWebView(model)
-                    .edgesIgnoringSafeArea(.bottom)
-                if self.model.isLoading {
+                    .ignoresSafeArea(edges: model.toolbarPosition == .bottom ? [] : .bottom)
+                if model.isLoading {
                     ProgressView()
                 }
             }
         }
     }
+}
+
+// MARK: - OSIABViewModel's constructor accelerator.
+private extension OSIABWebViewModel {
+    convenience init(toolbarPosition: OSIABToolbarPosition = .defaultValue) {
+        let configurationModel = OSIABWebViewConfigurationModel()
+        self.init(
+            url: .init(string: "https://outsystems.com")!,
+            configurationModel.toWebViewConfiguration(),
+            uiModel: .init(toolbarPosition: toolbarPosition),
+            callbackHandler: .init(
+                onDelegateURL: { _ in },
+                onDelegateAlertController: { _ in },
+                onBrowserPageLoad: {},
+                onBrowserClosed: { _ in }
+            )
+        )
+    }
+}
+
+#Preview("Default - Light Mode") {
+    OSIABWebViewWrapper(.init())
+}
+
+#Preview("Default - Dark Mode") {
+    OSIABWebViewWrapper(.init())
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Bottom Toolbar Defined") {
+    OSIABWebViewWrapper(.init(toolbarPosition: .bottom))
 }

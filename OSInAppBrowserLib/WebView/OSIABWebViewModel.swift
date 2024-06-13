@@ -10,6 +10,12 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     private let callbackHandler: OSIABWebViewCallbackHandler
     /// The current URL being displayed
     private let url: URL
+    /// Sets the position to display the Toolbar.
+    let toolbarPosition: OSIABToolbarPosition?
+    /// Indicates if the navigations should be displayed on the toolbar.
+    let showNavigationButtons: Bool
+    /// Indicates the positions of the navigation buttons and the close button - which one is on the left and on the right.
+    let leftToRight: Bool
     
     /// Indicates if first load is already done. This is important in order to trigger the `browserPageLoad` event.
     private var firstLoadDone: Bool = false
@@ -23,42 +29,39 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     /// Indicates if the forward button is available for pressing.
     @Published private(set) var forwardButtonEnabled: Bool = true
     
-    /// The current adress label being displayed on the screen.
-    @Published private(set) var addressLabel: String
+    /// The current adress label being displayed on the screen. Empty string indicates that the address will not be displayed.
+    @Published private(set) var addressLabel: String = ""
     
     /// Constructor method.
     /// - Parameters:
-    ///   - url: /// The current URL being displayed
-    ///   - mediaTypesRequiringUserActionForPlayback: Indicates if HTML5 audio or video should be prevented from being autoplayed. Defaults to nothing being autoplayed.
-    ///   - ignoresViewportScaleLimits: Indicates if scaling through a meta tag should be prevented. Defaults to `false`.
-    ///   - allowsInlineMediaPlayback: Indicates if in-line HTML5 media playback should be enabled.. Defaults to `false`
-    ///   - suppressesIncrementalRendering: Indicates if the rendering should wait until all new view content is received. Defaults to `false`.
+    ///   - url: The current URL being displayed
+    ///   - webViewConfiguration: Collection of properties with which to initialize the WebView.
     ///   - scrollViewBounces: Indicates if the WebView's bounce property should be enabled. Defaults to `true`.
     ///   - customUserAgent: Sets a custom user agent for the WebView.
-    ///   - closeButtonText: Sets the text to display on the Close button. Defaults to `Close`.
+    ///   - uiModel: Collection of properties to apply to the WebView's interface.
     ///   - callbackHandler: Object that manages all the callbacks available for the WebView.
     init(
         url: URL,
-        _ mediaTypesRequiringUserActionForPlayback: WKAudiovisualMediaTypes = [],
-        _ ignoresViewportScaleLimits: Bool = false,
-        _ allowsInlineMediaPlayback: Bool = false,
-        _ suppressesIncrementalRendering: Bool = false,
+        _ webViewConfiguration: WKWebViewConfiguration,
         _ scrollViewBounces: Bool = true,
         _ customUserAgent: String? = nil,
-        closeButtonText: String = "Close",
+        uiModel: OSIABWebViewUIModel,
         callbackHandler: OSIABWebViewCallbackHandler
     ) {
-        let configuration = WKWebViewConfiguration()
-        configuration.mediaTypesRequiringUserActionForPlayback = mediaTypesRequiringUserActionForPlayback
-        configuration.ignoresViewportScaleLimits = ignoresViewportScaleLimits
-        configuration.allowsInlineMediaPlayback = allowsInlineMediaPlayback
-        configuration.suppressesIncrementalRendering = suppressesIncrementalRendering
-        
         self.url = url
-        self.webView = .init(frame: .zero, configuration: configuration)
-        self.closeButtonText = closeButtonText
+        self.webView = .init(frame: .zero, configuration: webViewConfiguration)
+        self.closeButtonText = uiModel.closeButtonText
         self.callbackHandler = callbackHandler
-        self.addressLabel = url.absoluteString
+        if uiModel.showToolbar {
+            self.toolbarPosition = uiModel.toolbarPosition
+            if uiModel.showURL {
+                self.addressLabel = url.absoluteString
+            }
+        } else {
+            self.toolbarPosition = nil
+        }
+        self.showNavigationButtons = uiModel.showNavigationButtons
+        self.leftToRight = uiModel.leftToRight
         
         super.init()
         
@@ -67,24 +70,30 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
         
-        setupBindings()
+        setupBindings(uiModel.showURL, uiModel.showToolbar, uiModel.showNavigationButtons)
     }
     
     /// Setups the combine bindings, so that the Published properties can be filled automatically and reactively.
-    private func setupBindings() {
+    private func setupBindings(_ showURL: Bool, _ showToolbar: Bool, _ showNavigationButtons: Bool) {
         self.webView.publisher(for: \.isLoading)
             .assign(to: &$isLoading)
         
-        self.webView.publisher(for: \.canGoBack)
-            .assign(to: &$backButtonEnabled)
-        
-        self.webView.publisher(for: \.canGoForward)
-            .assign(to: &$forwardButtonEnabled)
-        
-        self.webView.publisher(for: \.url)
-            .compactMap { $0 }
-            .map(\.absoluteString)
-            .assign(to: &$addressLabel)
+        if showToolbar {
+            if showNavigationButtons {
+                self.webView.publisher(for: \.canGoBack)
+                    .assign(to: &$backButtonEnabled)
+                
+                self.webView.publisher(for: \.canGoForward)
+                    .assign(to: &$forwardButtonEnabled)
+            }
+            
+            if showURL {
+                self.webView.publisher(for: \.url)
+                    .compactMap { $0 }
+                    .map(\.absoluteString)
+                    .assign(to: &$addressLabel)
+            }
+        }
     }
     
     /// Loads the URL within the WebView. Is the first operation to be performed when the view is displayed.
