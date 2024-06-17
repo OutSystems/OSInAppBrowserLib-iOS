@@ -113,6 +113,19 @@ final class OSIABWebViewRouterAdapterTests: XCTestCase {
         waitForExpectations(timeout: 1)
         XCTAssertTrue(isBrowserAlreadyClosed)
     }
+    
+    func test_handleOpen_whenDismissingViewController_eventShouldBeTriggered() {
+        var isBrowserAlreadyClosed = false
+        let expectation = self.expectation(description: "Trigger onBrowserClose Event")
+        makeSUT { param in
+            isBrowserAlreadyClosed = param
+            expectation.fulfill()
+        }.handleOpen(validURL) {
+            $0.dismiss(animated: false)
+        }
+        waitForExpectations(timeout: 1)
+        XCTAssertTrue(isBrowserAlreadyClosed)
+    }
 }
 
 private extension OSIABWebViewRouterAdapterTests {
