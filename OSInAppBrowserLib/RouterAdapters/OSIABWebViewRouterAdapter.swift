@@ -34,29 +34,16 @@ public class OSIABWebViewRouterAdapter: NSObject, OSIABRouter {
             self.cacheManager.clearSessionCache()
         }
         
-        let configurationModel = OSIABWebViewConfigurationModel(
-            self.options.mediaTypesRequiringUserActionForPlayback,
-            self.options.enableViewportScale,
-            self.options.allowInLineMediaPlayback,
-            self.options.surpressIncrementalRendering
-        )
-        let uiModel = OSIABWebViewUIModel(
-            showURL: self.options.showURL,
-            showToolbar: self.options.showToolbar,
-            toolbarPosition: self.options.toolbarPosition,
-            showNavigationButtons: self.options.showNavigationButtons,
-            leftToRight: self.options.leftToRight,
-            closeButtonText: self.options.closeButtonText
-        )
         let viewModel = OSIABWebViewModel(
             url: url,
-            configurationModel.toWebViewConfiguration(),
+            self.options.toConfigurationModel().toWebViewConfiguration(),
             self.options.allowOverScroll,
             self.options.customUserAgent,
-            uiModel: uiModel,
+            uiModel: self.options.toUIModel(),
             callbackHandler: self.callbackHandler
         )
-        let hostingController = UIHostingController(rootView: OSIABWebViewWrapper(viewModel))
+        
+        let hostingController = OSIABWebViewController(rootView: .init(viewModel), dismiss: { self.callbackHandler.onBrowserClosed(true) })
         hostingController.modalPresentationStyle = self.options.modalPresentationStyle
         hostingController.modalTransitionStyle = self.options.modalTransitionStyle
         hostingController.presentationController?.delegate = self
@@ -65,9 +52,63 @@ public class OSIABWebViewRouterAdapter: NSObject, OSIABRouter {
     }
 }
 
+// MARK: - Accelerator methods.
+private extension OSIABWebViewOptions {
+    /// Converts the current value to `OSIABWebViewConfigurationModel` equivalent.
+    /// - Returns: The `OSIABWebViewConfigurationModel` equivalent value.
+    func toConfigurationModel() -> OSIABWebViewConfigurationModel {
+        .init(
+            self.mediaTypesRequiringUserActionForPlayback,
+            self.enableViewportScale,
+            self.allowInLineMediaPlayback,
+            self.surpressIncrementalRendering
+        )
+    }
+    
+    /// Converts the current value to `OSIABWebViewUIModel` equivalent.
+    /// - Returns: The `OSIABWebViewUIModel` equivalent value.
+    func toUIModel() -> OSIABWebViewUIModel {
+        .init(
+            showURL: self.showURL,
+            showToolbar: self.showToolbar,
+            toolbarPosition: self.toolbarPosition,
+            showNavigationButtons: self.showNavigationButtons,
+            leftToRight: self.leftToRight,
+            closeButtonText: self.closeButtonText
+        )
+    }
+}
+
 // MARK: - UIAdaptivePresentationControllerDelegate implementation
 extension OSIABWebViewRouterAdapter: UIAdaptivePresentationControllerDelegate {
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.callbackHandler.onBrowserClosed(true)
+    }
+}
+
+/// A subclass for `UIHostingController` where it's possible to delegate the `dismiss` call to its callers.
+private class OSIABWebViewController: UIHostingController<OSIABWebViewWrapper> {
+    /// Callback to trigger when the view controller is closed.
+    let dismiss: (() -> Void)?
+    
+    /// Constructor method.
+    /// - Parameters:
+    ///   - rootView: The root view of the SwiftUI view hierarchy that you want to manage using the hosting view controller.
+    ///   - dismiss: The callback to trigger when the view controller is dismissed.
+    init(rootView: OSIABWebViewWrapper, dismiss: (() -> Void)?) {
+        self.dismiss = dismiss
+        super.init(rootView: rootView)
+    }
+    
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        self.dismiss = nil
+        super.init(coder: aDecoder)
+    }
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: {
+            self.dismiss?()
+            completion?()
+        })
     }
 }

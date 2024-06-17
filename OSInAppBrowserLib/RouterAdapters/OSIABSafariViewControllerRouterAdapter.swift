@@ -23,11 +23,11 @@ public class OSIABSafariViewControllerRouterAdapter: NSObject, OSIABRouter {
     }
     
     public func handleOpen(_ url: URL, _ completionHandler: @escaping (ReturnType) -> Void) {
-        let configurations = SFSafariViewController.Configuration()
-        configurations.barCollapsingEnabled = self.options.enableBarsCollapsing
-        configurations.entersReaderIfAvailable =  self.options.enableReadersMode
+        let configuration = SFSafariViewController.Configuration()
+        configuration.barCollapsingEnabled = self.options.enableBarsCollapsing
+        configuration.entersReaderIfAvailable =  self.options.enableReadersMode
         
-        let safariViewController = SFSafariViewController(url: url, configuration: configurations)
+        let safariViewController = OSIABSafariViewController(url, configuration, dismiss: { self.onBrowserClosed() })
         safariViewController.dismissButtonStyle = self.options.dismissButtonStyle
         safariViewController.modalPresentationStyle = self.options.modalPresentationStyle
         safariViewController.modalTransitionStyle = self.options.modalTransitionStyle
@@ -46,15 +46,34 @@ extension OSIABSafariViewControllerRouterAdapter: SFSafariViewControllerDelegate
             self.onBrowserPageLoad()
         }
     }
-    
-    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        self.onBrowserClosed()
-    }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate implementation
 extension OSIABSafariViewControllerRouterAdapter: UIAdaptivePresentationControllerDelegate {
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.onBrowserClosed()
+    }
+}
+
+/// A subclass for `SFSafariViewController` where it's possible to delegate the `dismiss` call to its callers.
+private class OSIABSafariViewController: SFSafariViewController {
+    /// Callback to trigger when the view controller is closed.
+    let dismiss: () -> Void
+    
+    /// Constructor method.
+    /// - Parameters:
+    ///   - url: The initial URL to navigate to. Only supports initial URLs with http:// or https:// schemes.
+    ///   - configuration: The configuration for the new view controller.
+    ///   - dismiss: The callback to trigger when the view controller is dismissed.
+    init(_ url: URL, _ configuration: Configuration, dismiss: @escaping () -> Void) {
+        self.dismiss = dismiss
+        super.init(url: url, configuration: configuration)
+    }
+    
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: {
+            self.dismiss()
+            completion?()
+        })
     }
 }

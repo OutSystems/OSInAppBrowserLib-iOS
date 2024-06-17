@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Features
+- Add `Close` feature (https://outsystemsrd.atlassian.net/browse/RMET-3427).
 - Add `OpenInWebView`'s interface customisations (https://outsystemsrd.atlassian.net/browse/RMET-3489).
 - Add `OpenInWebView`'s event listeners (https://outsystemsrd.atlassian.net/browse/RMET-3430).
 - Add `OpenInWebView`'s features (https://outsystemsrd.atlassian.net/browse/RMET-3425).

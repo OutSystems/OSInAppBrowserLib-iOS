@@ -133,9 +133,7 @@ final class OSIABSafariVCRouterAdapterTests: XCTestCase {
     func test_handleOpen_withBrowserClosedConfigured_eventShouldBeTriggeredWhenClosed() {
         let expectation = self.expectation(description: "Trigger onBrowserClose Event")
         makeSUT(onBrowserClosed: { expectation.fulfill() }).handleOpen(validURL) {
-            if let safariViewController = $0 as? SFSafariViewController {
-                safariViewController.delegate?.safariViewControllerDidFinish?(safariViewController)
-            }
+            $0.dismiss(animated: false)
         }
         waitForExpectations(timeout: 1)
     }
