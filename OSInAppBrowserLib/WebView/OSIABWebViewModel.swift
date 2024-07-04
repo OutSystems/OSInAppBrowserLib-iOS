@@ -8,8 +8,7 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     let closeButtonText: String
     /// Object that manages all the callbacks available for the WebView.
     private let callbackHandler: OSIABWebViewCallbackHandler
-    /// The current URL being displayed
-    private let url: URL
+    
     /// Sets the position to display the Toolbar.
     let toolbarPosition: OSIABToolbarPosition?
     /// Indicates if the navigations should be displayed on the toolbar.
@@ -20,6 +19,8 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     /// Indicates if first load is already done. This is important in order to trigger the `browserPageLoad` event.
     private var firstLoadDone: Bool = false
     
+    /// The current URL being displayed
+    @Published private(set) var url: URL
     /// Indicates if the URL is being loaded into the screen.
     @Published private(set) var isLoading: Bool = true
     /// Indicates if there was any error while loading the URL.
@@ -94,6 +95,10 @@ class OSIABWebViewModel: NSObject, ObservableObject {
                     .assign(to: &$addressLabel)
             }
         }
+        
+        self.webView.publisher(for: \.url)
+            .compactMap { $0 }
+            .assign(to: &$url)
     }
     
     /// Loads the URL within the WebView. Is the first operation to be performed when the view is displayed.
@@ -147,6 +152,10 @@ extension OSIABWebViewModel: WKNavigationDelegate {
         if !self.firstLoadDone {
             self.callbackHandler.onBrowserPageLoad()
             self.firstLoadDone = true
+        }
+        
+        if self.error != nil {
+            error = nil
         }
     }
     

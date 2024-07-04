@@ -13,15 +13,10 @@ struct OSIABWebViewWrapper: View {
     
     var body: some View {
         ZStack {
-            if let error = model.error {
-                Text(error.localizedDescription)
-                    .foregroundColor(.pink)
-            } else {
-                OSIABWebView(model)
-                    .ignoresSafeArea(edges: model.toolbarPosition == .bottom ? [] : .bottom)
-                if model.isLoading {
-                    ProgressView()
-                }
+            OSIABWebView(model)
+                .ignoresSafeArea(edges: model.toolbarPosition == .bottom ? [] : .bottom)
+            if model.isLoading {
+                ProgressView()
             }
         }
     }
@@ -43,6 +38,21 @@ private extension OSIABWebViewModel {
             )
         )
     }
+    
+    convenience init(url: String) {
+        let configurationModel = OSIABWebViewConfigurationModel()
+        self.init(
+            url: .init(string: url)!,
+            configurationModel.toWebViewConfiguration(),
+            uiModel: .init(),
+            callbackHandler: .init(
+                onDelegateURL: { _ in },
+                onDelegateAlertController: { _ in },
+                onBrowserPageLoad: {},
+                onBrowserClosed: { _ in }
+            )
+        )
+    }
 }
 
 #Preview("Default - Light Mode") {
@@ -56,4 +66,13 @@ private extension OSIABWebViewModel {
 
 #Preview("Bottom Toolbar Defined") {
     OSIABWebViewWrapper(.init(toolbarPosition: .bottom))
+}
+
+#Preview("Error View - Light mode") {
+    OSIABWebViewWrapper(.init(url: "https://VFO_DealWithIt/"))
+}
+
+#Preview("Error View - Dark mode") {
+    OSIABWebViewWrapper(.init(url: "https://VFO_DealWithIt/"))
+        .preferredColorScheme(.dark)
 }

@@ -34,7 +34,10 @@ struct OSIABWebView: View {
                 }
                 .padding()
             }
-            OSIABWebViewRepresentable(model.webView)
+            if let error = self.model.error {
+                OSIABErrorView(error, self.model.loadURL)
+            } else { OSIABWebViewRepresentable(model.webView) }
+            
             if model.toolbarPosition == .bottom {
                 OSIABNavigationView(
                     showNavigationButtons: model.showNavigationButtons,
@@ -98,6 +101,7 @@ private struct OSIABTestWebView: View {
     private let toolbarPosition: OSIABToolbarPosition
     private let showNavigationButtons: Bool
     private let leftToRight: Bool
+    private let isError: Bool
     
     init(
         closeButtonText: String = "Close",
@@ -105,7 +109,8 @@ private struct OSIABTestWebView: View {
         showToolbar: Bool = true,
         toolbarPosition: OSIABToolbarPosition = .defaultValue,
         showNavigationButtons: Bool = true,
-        leftToRight: Bool = false
+        leftToRight: Bool = false,
+        isError: Bool = false
     ) {
         self.closeButtonText = closeButtonText
         self.showURL = showURL
@@ -113,13 +118,14 @@ private struct OSIABTestWebView: View {
         self.toolbarPosition = toolbarPosition
         self.showNavigationButtons = showNavigationButtons
         self.leftToRight = leftToRight
+        self.isError = isError
     }
     
     var body: some View {
         VStack {
             OSIABWebView(
                 .init(
-                    url: "https://outsystems.com",
+                    url: self.isError ?  "https://outsystems" : "https://outsystems.com",
                     showURL: showURL,
                     showToolbar: showToolbar,
                     toolbarPosition: toolbarPosition,
@@ -143,6 +149,10 @@ private struct OSIABTestWebView: View {
 #Preview("Default - Dark Mode") {
     OSIABTestWebView()
         .preferredColorScheme(.dark)
+}
+
+#Preview("Error - Light Mode") {
+    OSIABTestWebView(isError: true)
 }
 
 // MARK: - Custom Close Button View

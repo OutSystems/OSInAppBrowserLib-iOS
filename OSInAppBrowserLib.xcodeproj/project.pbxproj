@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1BB4F8BC2C36F54800F50A33 /* OSIABErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */; };
 		750949C02C11D992006843E1 /* OSIABToolbarPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949BE2C11D992006843E1 /* OSIABToolbarPosition.swift */; };
 		750949C12C11D992006843E1 /* OSIABWebViewOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949BF2C11D992006843E1 /* OSIABWebViewOptions.swift */; };
 		750949C32C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C22C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABErrorView.swift; sourceTree = "<group>"; };
 		750949BE2C11D992006843E1 /* OSIABToolbarPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABToolbarPosition.swift; sourceTree = "<group>"; };
 		750949BF2C11D992006843E1 /* OSIABWebViewOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewOptions.swift; sourceTree = "<group>"; };
 		750949C22C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewRouterAdapter.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				750949C52C11D9E2006843E1 /* OSIABWebView.swift */,
 				750949C92C11D9E2006843E1 /* OSIABWebViewRepresentable.swift */,
 				750949C72C11D9E2006843E1 /* OSIABWebViewWrapper.swift */,
+				1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -365,6 +368,7 @@
 				754451FB2C04C76C003D7361 /* OSIABAnimationEffect.swift in Sources */,
 				750949CE2C11D9E2006843E1 /* OSIABWebViewModel.swift in Sources */,
 				750949D82C11F7D1006843E1 /* OSIABWebViewCallbackHandler.swift in Sources */,
+				1BB4F8BC2C36F54800F50A33 /* OSIABErrorView.swift in Sources */,
 				750949CD2C11D9E2006843E1 /* OSIABWebViewWrapper.swift in Sources */,
 				750949C32C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift in Sources */,
 				754451FD2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift in Sources */,
