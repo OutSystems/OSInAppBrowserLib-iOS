@@ -69,10 +69,10 @@ private extension OSIABWebViewModel {
 }
 
 #Preview("Error View - Light mode") {
-    OSIABWebViewWrapper(.init(url: "https://VFO_DealWithIt/"))
+    OSIABWebViewWrapper(.init(url: "https://outsystems/"))
 }
 
 #Preview("Error View - Dark mode") {
-    OSIABWebViewWrapper(.init(url: "https://VFO_DealWithIt/"))
+    OSIABWebViewWrapper(.init(url: "https://outsystems/"))
         .preferredColorScheme(.dark)
 }

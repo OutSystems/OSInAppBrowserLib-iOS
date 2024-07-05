@@ -79,6 +79,10 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         self.webView.publisher(for: \.isLoading)
             .assign(to: &$isLoading)
         
+        self.webView.publisher(for: \.url)
+            .compactMap { $0 }
+            .assign(to: &$url)
+        
         if showToolbar {
             if showNavigationButtons {
                 self.webView.publisher(for: \.canGoBack)
@@ -89,16 +93,11 @@ class OSIABWebViewModel: NSObject, ObservableObject {
             }
             
             if showURL {
-                self.webView.publisher(for: \.url)
-                    .compactMap { $0 }
-                    .map(\.absoluteString)
+                self.$url.map(\.absoluteString)
                     .assign(to: &$addressLabel)
             }
         }
-        
-        self.webView.publisher(for: \.url)
-            .compactMap { $0 }
-            .assign(to: &$url)
+
     }
     
     /// Loads the URL within the WebView. Is the first operation to be performed when the view is displayed.
@@ -153,10 +152,7 @@ extension OSIABWebViewModel: WKNavigationDelegate {
             self.callbackHandler.onBrowserPageLoad()
             self.firstLoadDone = true
         }
-        
-        if self.error != nil {
-            error = nil
-        }
+        error = nil
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

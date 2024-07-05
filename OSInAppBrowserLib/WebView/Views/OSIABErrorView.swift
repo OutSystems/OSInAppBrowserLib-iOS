@@ -11,28 +11,24 @@ struct OSIABErrorView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 16) {
             Text("Couldn't load the page content.")
                 .foregroundColor(.gray)
             HStack {
                 Button(action: reload, label: {
                     HStack {
                         Image(systemName: "arrow.clockwise")
-                        Text("Reload page.").fontWeight(.semibold)
+                        Text("Reload page").fontWeight(.semibold)
                     }
                 }).buttonStyle(.plain)
-                    .onTapGesture {
-                        print("Clicked Reload!")
-                    }
-               
-            }.padding(.top)
+            }
             Spacer()
         }.padding(.top, 120)
-            .environment(\.layoutDirection, .leftToRight)
+        .environment(\.layoutDirection, .leftToRight)
     }
 }
 
-#Preview {
+#Preview("Default - Error Light") {
     OSIABErrorView(
         NSError(domain: "Preview", code: NSURLErrorBadURL), {
             print("Clicked reload")
