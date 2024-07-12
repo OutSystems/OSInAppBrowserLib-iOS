@@ -71,7 +71,7 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
         
-        setupBindings(uiModel.showURL, uiModel.showToolbar, uiModel.showNavigationButtons)
+        self.setupBindings(uiModel.showURL, uiModel.showToolbar, uiModel.showNavigationButtons)
     }
     
     /// Setups the combine bindings, so that the Published properties can be filled automatically and reactively.

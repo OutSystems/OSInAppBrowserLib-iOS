@@ -20,6 +20,7 @@
 		750949D82C11F7D1006843E1 /* OSIABWebViewCallbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949D72C11F7D1006843E1 /* OSIABWebViewCallbackHandler.swift */; };
 		75094A052C1213A3006843E1 /* OSIABWebViewRouterAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75094A042C1213A3006843E1 /* OSIABWebViewRouterAdapterTests.swift */; };
 		75094A072C121BD9006843E1 /* OSIABCacheManagerStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75094A062C121BD9006843E1 /* OSIABCacheManagerStub.swift */; };
+		750E23BD2C41686300395353 /* OSIABViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750E23BC2C41686300395353 /* OSIABViewModifiers.swift */; };
 		754451F02C049AA4003D7361 /* OSIABDismissStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */; };
 		754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451F52C04AB69003D7361 /* OSIABViewStyle.swift */; };
 		754451FB2C04C76C003D7361 /* OSIABAnimationEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */; };
@@ -66,6 +67,7 @@
 		750949D72C11F7D1006843E1 /* OSIABWebViewCallbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABWebViewCallbackHandler.swift; sourceTree = "<group>"; };
 		75094A042C1213A3006843E1 /* OSIABWebViewRouterAdapterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABWebViewRouterAdapterTests.swift; sourceTree = "<group>"; };
 		75094A062C121BD9006843E1 /* OSIABCacheManagerStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABCacheManagerStub.swift; sourceTree = "<group>"; };
+		750E23BC2C41686300395353 /* OSIABViewModifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABViewModifiers.swift; sourceTree = "<group>"; };
 		754451EF2C049AA4003D7361 /* OSIABDismissStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABDismissStyle.swift; sourceTree = "<group>"; };
 		754451F52C04AB69003D7361 /* OSIABViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABViewStyle.swift; sourceTree = "<group>"; };
 		754451FA2C04C76C003D7361 /* OSIABAnimationEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABAnimationEffect.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		750949D12C11DA23006843E1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				750E23BB2C41686300395353 /* Modifiers */,
 				759027B22C1AFBCB00E02498 /* OSIABNavigationView.swift */,
 				750949C52C11D9E2006843E1 /* OSIABWebView.swift */,
 				750949C92C11D9E2006843E1 /* OSIABWebViewRepresentable.swift */,
@@ -138,6 +141,14 @@
 				750949BF2C11D992006843E1 /* OSIABWebViewOptions.swift */,
 			);
 			path = Options;
+			sourceTree = "<group>";
+		};
+		750E23BB2C41686300395353 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				750E23BC2C41686300395353 /* OSIABViewModifiers.swift */,
+			);
+			path = Modifiers;
 			sourceTree = "<group>";
 		};
 		754451F72C04AB78003D7361 /* Models */ = {
@@ -356,6 +367,7 @@
 				750949C12C11D992006843E1 /* OSIABWebViewOptions.swift in Sources */,
 				750949CB2C11D9E2006843E1 /* OSIABWebView.swift in Sources */,
 				750949D32C11DD8F006843E1 /* OSIABOptions.swift in Sources */,
+				750E23BD2C41686300395353 /* OSIABViewModifiers.swift in Sources */,
 				759027B32C1AFBCB00E02498 /* OSIABNavigationView.swift in Sources */,
 				750949C02C11D992006843E1 /* OSIABToolbarPosition.swift in Sources */,
 				750949CA2C11D9E2006843E1 /* OSIABCacheManager.swift in Sources */,

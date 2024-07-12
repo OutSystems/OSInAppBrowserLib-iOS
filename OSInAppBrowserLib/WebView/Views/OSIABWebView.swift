@@ -23,20 +23,29 @@ struct OSIABWebView: View {
                             forwardButtonPressed: model.forwardButtonPressed,
                             forwardButtonEnabled: model.forwardButtonEnabled,
                             addressLabel: model.addressLabel,
-                            addressLabelAlignment: model.showNavigationButtons ? .center : .leading
+                            addressLabelAlignment: model.showNavigationButtons ? .center : .leading,
+                            buttonLayoutDirection: .fixed(value: .leftToRight)  // we force 'back' to come always before 'forward'
                         )
                     }
                     Spacer()
                     
                     Button(action: model.closeButtonPressed, label: {
                         Text(model.closeButtonText)
+                            .bold()
                     })
+                    .buttonStyle(.plain)
                 }
                 .padding()
             }
-            if let error = self.model.error {
-                OSIABErrorView(error, self.model.loadURL)
-            } else { OSIABWebViewRepresentable(model.webView) }
+            if let error = model.error {
+                OSIABErrorView(
+                    error, 
+                    model.loadURL,
+                    reloadViewLayoutDirection: .fixed(value: .leftToRight)
+                )
+            } else {
+                OSIABWebViewRepresentable(model.webView)
+            }
             
             if model.toolbarPosition == .bottom {
                 OSIABNavigationView(
@@ -46,7 +55,8 @@ struct OSIABWebView: View {
                     forwardButtonPressed: model.forwardButtonPressed,
                     forwardButtonEnabled: model.forwardButtonEnabled,
                     addressLabel: model.addressLabel,
-                    addressLabelAlignment: model.showNavigationButtons ? .trailing : .center
+                    addressLabelAlignment: model.showNavigationButtons ? .trailing : .center,
+                    buttonLayoutDirection: .fixed(value: .leftToRight) // we force 'back' to come always before 'forward'
                 )
                 .padding()
             }
@@ -54,7 +64,7 @@ struct OSIABWebView: View {
         .onAppear(perform: {
             model.loadURL()
         })
-        .environment(\.layoutDirection, model.leftToRight ? .leftToRight : .rightToLeft)
+        .layoutDirection(.leftToRightBasedOn(value: model.leftToRight))
     }
 }
 

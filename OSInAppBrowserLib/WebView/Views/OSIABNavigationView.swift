@@ -1,5 +1,33 @@
 import SwiftUI
 
+private struct OSIABNavigationButton: View {
+    /// Handler to trigger when the button is pressed.
+    private let buttonPressed: () -> Void
+    /// The icon to set the button with.
+    private let iconName: String
+    /// Indicates if the button should appeared as enabled or not.
+    private let isDisabled: Bool
+    
+    /// Constructor method.
+    /// - Parameters:
+    ///   - buttonPressed: Handler to trigger when the button is pressed.
+    ///   - iconName: The icon to set the button with.
+    ///   - isDisabled: Indicates if the button should appeared as enabled or not.
+    init(_ buttonPressed: @escaping () -> Void, iconName: String, isDisabled: Bool) {
+        self.buttonPressed = buttonPressed
+        self.iconName = iconName
+        self.isDisabled = isDisabled
+    }
+    
+    var body: some View {
+        Button(action: buttonPressed, label: {
+            Image(systemName: iconName)
+        })
+        .buttonStyle(.plain)
+        .disabled(isDisabled)
+    }
+}
+
 /// View related with displaying the Navigation items (buttons + URL address)
 struct OSIABNavigationView: View {
     /// Indicates if the navigations should be displayed on the toolbar.
@@ -16,6 +44,8 @@ struct OSIABNavigationView: View {
     private let addressLabel: String
     /// Alignment to apply to the URL address.
     private let addressLabelAlignment: Alignment
+    /// Indicates if the navigation buttons should stay on the order defined or adapt.
+    private let buttonLayoutDirection: OSIABLayoutDirectionEnum
     
     /// Constructor method.
     /// - Parameters:
@@ -33,7 +63,8 @@ struct OSIABNavigationView: View {
         forwardButtonPressed: @escaping () -> Void,
         forwardButtonEnabled: Bool,
         addressLabel: String,
-        addressLabelAlignment: Alignment
+        addressLabelAlignment: Alignment,
+        buttonLayoutDirection: OSIABLayoutDirectionEnum
     ) {
         self.showNavigationButtons = showNavigationButtons
         self.backButtonPressed = backButtonPressed
@@ -42,24 +73,26 @@ struct OSIABNavigationView: View {
         self.forwardButtonEnabled = forwardButtonEnabled
         self.addressLabel = addressLabel
         self.addressLabelAlignment = addressLabelAlignment
+        self.buttonLayoutDirection = buttonLayoutDirection
     }
     
     var body: some View {
         HStack {
             if showNavigationButtons {
                 HStack {
-                    Button(action: backButtonPressed, label: {
-                        Image(systemName: "chevron.backward")
-                    })
-                    .disabled(!backButtonEnabled)
+                    OSIABNavigationButton(
+                        backButtonPressed,
+                        iconName: "chevron.backward",
+                        isDisabled: !backButtonEnabled
+                    )
                     
-                    Button(action: forwardButtonPressed, label: {
-                        Image(systemName: "chevron.forward")
-                    })
-                    .disabled(!forwardButtonEnabled)
+                    OSIABNavigationButton(
+                        forwardButtonPressed,
+                        iconName: "chevron.forward", 
+                        isDisabled: !forwardButtonEnabled
+                    )
                 }
-                // we force 'back' to come always before 'forward'
-                .environment(\.layoutDirection, .leftToRight)
+                .layoutDirection(buttonLayoutDirection)
                 
                 Spacer()
             }
@@ -105,7 +138,8 @@ private struct OSIABTestNavigationView: View {
                 },
                 forwardButtonEnabled: forwardButtonEnabled,
                 addressLabel: addressLabel,
-                addressLabelAlignment: showNavigationButtons ? .trailing : .center
+                addressLabelAlignment: showNavigationButtons ? .trailing : .center,
+                buttonLayoutDirection: .fixed(value: .leftToRight)
             )
             .padding()
             .background(Color.secondary.opacity(0.3))
