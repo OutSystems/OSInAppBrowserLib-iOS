@@ -2,7 +2,7 @@ import OSInAppBrowserLib
 import UIKit
 
 struct OSIABExternalRouterSpy: OSIABRouter {
-    var shouldOpenSafari: Bool
+    private var shouldOpenSafari: Bool
     
     init(shouldOpenSafari: Bool) {
         self.shouldOpenSafari = shouldOpenSafari
@@ -14,7 +14,7 @@ struct OSIABExternalRouterSpy: OSIABRouter {
 }
 
 struct OSIABSystemRouterSpy: OSIABRouter {
-    var shouldOpenSafariViewController: UIViewController
+    private var shouldOpenSafariViewController: UIViewController
     
     init(shouldOpen viewController: UIViewController) {
         self.shouldOpenSafariViewController = viewController
@@ -26,7 +26,7 @@ struct OSIABSystemRouterSpy: OSIABRouter {
 }
 
 struct OSIABWebViewRouterSpy: OSIABRouter {
-    var shouldOpenView: UIViewController
+    private var shouldOpenView: UIViewController
     
     init(shouldOpen viewController: UIViewController) {
         self.shouldOpenView = viewController

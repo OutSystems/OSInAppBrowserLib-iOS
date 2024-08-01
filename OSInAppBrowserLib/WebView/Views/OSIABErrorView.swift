@@ -17,7 +17,7 @@ struct OSIABErrorView: View {
     ///   - reloadViewLayoutDirection: Indicates if the how the reload view should be displayed in terms of layout.
     init(
         _ error: Error,
-        _ reload: @escaping () -> Void,
+        reload: @escaping () -> Void,
         reloadViewLayoutDirection: OSIABLayoutDirectionEnum
     ) {
         self.error = error
@@ -49,7 +49,7 @@ struct OSIABErrorView: View {
 #Preview("Default - Error Light") {
     OSIABErrorView(
         NSError(domain: "Preview", code: NSURLErrorBadURL), 
-        { print("Clicked reload") },
+        reload: { print("Clicked reload") },
         reloadViewLayoutDirection: .fixed(value: .leftToRight)
     )
 }

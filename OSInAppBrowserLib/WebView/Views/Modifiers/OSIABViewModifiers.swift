@@ -18,7 +18,8 @@ struct OSIABLayoutDirectionModifier: ViewModifier {
     }
     
     func body(content: Content) -> some View {
-        let layoutDirection = switch self.directionType {
+        let layoutDirection =
+        switch self.directionType {
         case .fixed(let value): value
         case .leftToRightBasedOn(let value): value ? LayoutDirection.leftToRight : .rightToLeft
         }

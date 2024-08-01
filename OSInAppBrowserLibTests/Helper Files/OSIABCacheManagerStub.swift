@@ -22,7 +22,7 @@ final class OSIABCacheManagerStub: OSIABCacheManager {
 }
 
 final class OSIABWebsiteDataStoreStub: WKWebsiteDataStore {
-    class func dataStore(numberOfCookiesToAdd: Int = 0, numberOfSessionCookiesToAdd: Int = 0, _ completionHandler: @escaping () -> Void) -> WKWebsiteDataStore {
+    static func dataStore(numberOfCookiesToAdd: Int = 0, numberOfSessionCookiesToAdd: Int = 0, _ completionHandler: @escaping () -> Void) -> WKWebsiteDataStore {
         var cookieArray = [HTTPCookie]()
         if numberOfCookiesToAdd > 0 {
             cookieArray += Array(repeating: OSIABCookieMock(), count: numberOfCookiesToAdd)

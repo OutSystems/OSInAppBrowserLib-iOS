@@ -40,7 +40,7 @@ struct OSIABWebView: View {
             if let error = model.error {
                 OSIABErrorView(
                     error, 
-                    model.loadURL,
+                    reload: model.loadURL,
                     reloadViewLayoutDirection: .fixed(value: .leftToRight)
                 )
             } else {
