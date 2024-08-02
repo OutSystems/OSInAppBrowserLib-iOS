@@ -21,20 +21,32 @@ Each is detailed in the following sections.
 ## Motivation
 
 This library is to be used by the InAppBrowser Plugin for [OutSystems' Cordova Plugin](https://github.com/OutSystems/cordova-outsystems-inappbrowser) and [Ionic's Capacitor Plugin](https://github.com/ionic-team/capacitor-os-inappbrowser). 
-The repository contains a `build_framework.sh` script that allows the creation of the `OSInAppBrowserLib.xcframework`. This framework should then be imported into its callers as a framework.
 
 ## Usage
 
-1. Create the `OSInAppBrowserLib.xcframework` using the `build_framework.sh` script. This is achievable through the following bash script.
-
-```console
-sh build_framework.sh
-```
-
-2. Include the `OSInAppBrowserLib.xcframework` on your project. For example, the following must be inserted into the `plugin.xml` to achieve this on a Cordova plugin.
+The library is available on CocoaPods as `OSInAppBrowserLib`. The following is an example of how to insert it into a Cordova plugin (through the `plugin.xml` file).
 
 ```xml
-<framework src="{path to framework}/OSInAppBrowserLib.xcframework" embed="true" custom="true" />
+<podspec>
+    <config>
+        <source url="https://cdn.cocoapods.org/"/>
+    </config>
+    <pods use-frameworks="true">
+        ...
+        <pod name="OSInAppBrowserLib" spec="${version to use}" />
+        ...
+    </pods>
+</podspec>
+```
+
+It can also be included as a dependency on other podspecs.
+
+```ruby
+Pod::Spec.new do |s|
+  ...
+  s.dependency 'OSInAppBrowserLib', '${version to use}'
+  ...
+end
 ```
 
 ## Methods
