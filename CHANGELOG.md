@@ -17,4 +17,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `OpenInExternalBrowser` (https://outsystemsrd.atlassian.net/browse/RMET-3421).
 
 ### Chores
+- Create `podspec` to enable CocoaPods publish (https://outsystemsrd.atlassian.net/browse/RMET-3578).
 - Add content to `README` (https://outsystemsrd.atlassian.net/browse/RMET-3473).
