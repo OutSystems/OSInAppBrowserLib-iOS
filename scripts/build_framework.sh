@@ -30,6 +30,8 @@ xcodebuild -create-xcframework \
 		-debug-symbols "${PWD}/${IOS_DEVICE_ARCHIVE_PATH}/dSYMs/${FRAMEWORK_NAME}.framework.dSYM" \
 	-output "./${BUILD_FOLDER}/${FRAMEWORK_NAME}.xcframework"
 
+cp LICENSE ${BUILD_FOLDER}
+
 cd "./${BUILD_FOLDER}"
 
-zip -r - "${FRAMEWORK_NAME}.xcframework" >"${FRAMEWORK_NAME}.zip"
+zip -r "${FRAMEWORK_NAME}.zip" "${FRAMEWORK_NAME}.xcframework" LICENSE
