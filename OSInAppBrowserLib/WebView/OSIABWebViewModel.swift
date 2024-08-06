@@ -1,3 +1,4 @@
+import Combine
 import WebKit
 
 /// View Model containing all the WebView's customisations.
@@ -32,6 +33,8 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     
     /// The current adress label being displayed on the screen. Empty string indicates that the address will not be displayed.
     @Published private(set) var addressLabel: String = ""
+    
+    private var cancellables = Set<AnyCancellable>()
     
     /// Constructor method.
     /// - Parameters:
@@ -76,28 +79,56 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     
     /// Setups the combine bindings, so that the Published properties can be filled automatically and reactively.
     private func setupBindings(_ showURL: Bool, _ showToolbar: Bool, _ showNavigationButtons: Bool) {
-        self.webView.publisher(for: \.isLoading)
-            .assign(to: &$isLoading)
-        
-        self.webView.publisher(for: \.url)
-            .compactMap { $0 }
-            .assign(to: &$url)
-        
-        if showToolbar {
-            if showNavigationButtons {
-                self.webView.publisher(for: \.canGoBack)
-                    .assign(to: &$backButtonEnabled)
-                
-                self.webView.publisher(for: \.canGoForward)
-                    .assign(to: &$forwardButtonEnabled)
-            }
+        if #available(iOS 14.0, *) {
+            self.webView.publisher(for: \.isLoading)
+                .assign(to: &$isLoading)
             
-            if showURL {
-                self.$url.map(\.absoluteString)
-                    .assign(to: &$addressLabel)
+            self.webView.publisher(for: \.url)
+                .compactMap { $0 }
+                .assign(to: &$url)
+            
+            if showToolbar {
+                if showNavigationButtons {
+                    self.webView.publisher(for: \.canGoBack)
+                        .assign(to: &$backButtonEnabled)
+                    
+                    self.webView.publisher(for: \.canGoForward)
+                        .assign(to: &$forwardButtonEnabled)
+                }
+                
+                if showURL {
+                    self.$url.map(\.absoluteString)
+                        .assign(to: &$addressLabel)
+                }
+            }
+        } else {
+            self.webView.publisher(for: \.isLoading)
+                .assign(to: \.isLoading, on: self)
+                .store(in: &cancellables)
+            
+            self.webView.publisher(for: \.url)
+                .compactMap { $0 }
+                .assign(to: \.url, on: self)
+                .store(in: &cancellables)
+            
+            if showToolbar {
+                if showNavigationButtons {
+                    self.webView.publisher(for: \.canGoBack)
+                        .assign(to: \.backButtonEnabled, on: self)
+                        .store(in: &cancellables)
+                    
+                    self.webView.publisher(for: \.canGoForward)
+                        .assign(to: \.forwardButtonEnabled, on: self)
+                        .store(in: &cancellables)
+                }
+                
+                if showURL {
+                    self.$url.map(\.absoluteString)
+                        .assign(to: \.addressLabel, on: self)
+                        .store(in: &cancellables)
+                }
             }
         }
-
     }
     
     /// Loads the URL within the WebView. Is the first operation to be performed when the view is displayed.

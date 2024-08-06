@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1BB4F8BC2C36F54800F50A33 /* OSIABErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */; };
+		7506BDD22C622B8D00409255 /* OSIABWebView13WrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7506BDD12C622B8D00409255 /* OSIABWebView13WrapperView.swift */; };
 		750949C02C11D992006843E1 /* OSIABToolbarPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949BE2C11D992006843E1 /* OSIABToolbarPosition.swift */; };
 		750949C12C11D992006843E1 /* OSIABWebViewOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949BF2C11D992006843E1 /* OSIABWebViewOptions.swift */; };
 		750949C32C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C22C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift */; };
 		750949CA2C11D9E2006843E1 /* OSIABCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C42C11D9E2006843E1 /* OSIABCacheManager.swift */; };
 		750949CB2C11D9E2006843E1 /* OSIABWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C52C11D9E2006843E1 /* OSIABWebView.swift */; };
-		750949CD2C11D9E2006843E1 /* OSIABWebViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C72C11D9E2006843E1 /* OSIABWebViewWrapper.swift */; };
+		750949CD2C11D9E2006843E1 /* OSIABWebViewWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C72C11D9E2006843E1 /* OSIABWebViewWrapperView.swift */; };
 		750949CE2C11D9E2006843E1 /* OSIABWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C82C11D9E2006843E1 /* OSIABWebViewModel.swift */; };
 		750949CF2C11D9E2006843E1 /* OSIABWebViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949C92C11D9E2006843E1 /* OSIABWebViewRepresentable.swift */; };
 		750949D32C11DD8F006843E1 /* OSIABOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 750949D22C11DD8F006843E1 /* OSIABOptions.swift */; };
@@ -55,12 +56,13 @@
 
 /* Begin PBXFileReference section */
 		1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABErrorView.swift; sourceTree = "<group>"; };
+		7506BDD12C622B8D00409255 /* OSIABWebView13WrapperView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABWebView13WrapperView.swift; sourceTree = "<group>"; };
 		750949BE2C11D992006843E1 /* OSIABToolbarPosition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABToolbarPosition.swift; sourceTree = "<group>"; };
 		750949BF2C11D992006843E1 /* OSIABWebViewOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewOptions.swift; sourceTree = "<group>"; };
 		750949C22C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewRouterAdapter.swift; sourceTree = "<group>"; };
 		750949C42C11D9E2006843E1 /* OSIABCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABCacheManager.swift; sourceTree = "<group>"; };
 		750949C52C11D9E2006843E1 /* OSIABWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebView.swift; sourceTree = "<group>"; };
-		750949C72C11D9E2006843E1 /* OSIABWebViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewWrapper.swift; sourceTree = "<group>"; };
+		750949C72C11D9E2006843E1 /* OSIABWebViewWrapperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewWrapperView.swift; sourceTree = "<group>"; };
 		750949C82C11D9E2006843E1 /* OSIABWebViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewModel.swift; sourceTree = "<group>"; };
 		750949C92C11D9E2006843E1 /* OSIABWebViewRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OSIABWebViewRepresentable.swift; sourceTree = "<group>"; };
 		750949D22C11DD8F006843E1 /* OSIABOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSIABOptions.swift; sourceTree = "<group>"; };
@@ -124,11 +126,12 @@
 			isa = PBXGroup;
 			children = (
 				750E23BB2C41686300395353 /* Modifiers */,
+				1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */,
 				759027B22C1AFBCB00E02498 /* OSIABNavigationView.swift */,
 				750949C52C11D9E2006843E1 /* OSIABWebView.swift */,
 				750949C92C11D9E2006843E1 /* OSIABWebViewRepresentable.swift */,
-				750949C72C11D9E2006843E1 /* OSIABWebViewWrapper.swift */,
-				1BB4F8BB2C36F54800F50A33 /* OSIABErrorView.swift */,
+				7506BDD12C622B8D00409255 /* OSIABWebView13WrapperView.swift */,
+				750949C72C11D9E2006843E1 /* OSIABWebViewWrapperView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -372,6 +375,7 @@
 				750949C02C11D992006843E1 /* OSIABToolbarPosition.swift in Sources */,
 				750949CA2C11D9E2006843E1 /* OSIABCacheManager.swift in Sources */,
 				759027B72C1B13CA00E02498 /* OSIABWebViewUIModel.swift in Sources */,
+				7506BDD22C622B8D00409255 /* OSIABWebView13WrapperView.swift in Sources */,
 				754451F62C04AB69003D7361 /* OSIABViewStyle.swift in Sources */,
 				756346642C00F21000685AA3 /* OSIABApplicationRouterAdapter.swift in Sources */,
 				750949CF2C11D9E2006843E1 /* OSIABWebViewRepresentable.swift in Sources */,
@@ -381,7 +385,7 @@
 				750949CE2C11D9E2006843E1 /* OSIABWebViewModel.swift in Sources */,
 				750949D82C11F7D1006843E1 /* OSIABWebViewCallbackHandler.swift in Sources */,
 				1BB4F8BC2C36F54800F50A33 /* OSIABErrorView.swift in Sources */,
-				750949CD2C11D9E2006843E1 /* OSIABWebViewWrapper.swift in Sources */,
+				750949CD2C11D9E2006843E1 /* OSIABWebViewWrapperView.swift in Sources */,
 				750949C32C11D9D0006843E1 /* OSIABWebViewRouterAdapter.swift in Sources */,
 				754451FD2C04D38D003D7361 /* OSIABSystemBrowserOptions.swift in Sources */,
 				756346632C00F21000685AA3 /* OSIABSafariViewControllerRouterAdapter.swift in Sources */,
@@ -479,6 +483,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -538,6 +543,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -559,7 +565,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -593,7 +599,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -619,6 +625,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.outsystems.rd.inappbrowser.OSInAppBrowserLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -637,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 0;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 0.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.outsystems.rd.inappbrowser.OSInAppBrowserLibTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
