@@ -4,18 +4,15 @@ import UIKit
 /// This is implemented by the `UIApplication` object that can be used as an External Browser.
 public protocol OSIABApplicationDelegate: AnyObject {
     func canOpenURL(_ url: URL) -> Bool
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?)
-}
-
-/// Provide a default implementations that abstracts the options parameter.
-extension OSIABApplicationDelegate {
-    public func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:], completionHandler completion: ((Bool) -> Void)?) {
-        self.open(url, options: options, completionHandler: completion)
-    }
+    func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?)
 }
 
 /// Make `UIApplication` conform to the `OSIABApplicationDelegate` protocol.
-extension UIApplication: OSIABApplicationDelegate {}
+extension UIApplication: OSIABApplicationDelegate {
+    func open(_ url: URL, completionHandler completion: ((Bool) -> Void)?) {
+        self.open(url, options: [:], completionHandler: completion)
+    }
+}
 
 /// Adapter that makes the required calls so that an `OSIABApplicationDelegate` implementation can perform the External Browser routing.
 public class OSIABApplicationRouterAdapter: OSIABRouter {
