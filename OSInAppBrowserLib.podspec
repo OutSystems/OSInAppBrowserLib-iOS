@@ -22,7 +22,6 @@ Pod::Spec.new do |spec|
   spec.author                 = { 'OutSystems Mobile Ecosystem' => 'rd.mobileecosystem.team@outsystems.com' }
   
   spec.source                 = { :http => "https://github.com/OutSystems/OSInAppBrowserLib-iOS/releases/download/#{spec.version}/OSInAppBrowserLib.zip", :type => "zip" }
-  spec.source_files           = "OSInAppBrowserLib/**/*"
   spec.vendored_frameworks    = "OSInAppBrowserLib.xcframework"
 
   spec.ios.deployment_target  = '13.0'
