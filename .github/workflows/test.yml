@@ -1,0 +1,119 @@
+name: Test Suite
+
+on:
+  push:
+    branches: 
+      - main
+      - misc/RMET-4346/ci-cd  # Temporary for testing
+  pull_request:
+    types: [opened, synchronize, reopened]
+    
+jobs:
+  test:
+    name: Run Tests
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install Dependencies
+        run: |
+          # Install SwiftLint
+          if ! command -v swiftlint &> /dev/null; then
+            brew install swiftlint
+          fi
+          
+          # Install xcpretty for better output formatting
+          if ! gem list xcpretty -i &> /dev/null; then
+            gem install xcpretty
+          fi
+          
+          # Install xcresultparser for SonarQube integration
+          if ! command -v xcresultparser &> /dev/null; then
+            brew install sonarsource/tap/xcresultparser
+          fi
+          
+      - name: Run Unit Tests
+        run: |
+          mkdir -p build/reports
+          set -o pipefail
+          xcodebuild test \
+            -project OSInAppBrowserLib.xcodeproj \
+            -scheme OSInAppBrowserLib \
+            -destination "platform=iOS Simulator,name=iPhone 16" \
+            -configuration Debug \
+            -enableCodeCoverage YES \
+            -resultBundlePath TestResults.xcresult \
+            SKIP_SCRIPT_PHASES=YES \
+            CODE_SIGNING_ALLOWED=NO | xcpretty --report junit --output build/reports/junit.xml
+            
+      - name: Generate Code Coverage Report and Convert to SonarQube Format
+        run: |
+          # Display coverage report for logs
+          xcrun xccov view --report TestResults.xcresult
+          
+          # Create sonar-reports directory
+          mkdir -p sonar-reports
+          
+          # Convert XCResult to SonarQube Generic Coverage format
+          xcresultparser --output-format sonarqube \
+            --path TestResults.xcresult \
+            --output sonar-reports/sonarqube-generic-coverage.xml
+          
+      - name: Run SwiftLint for SonarQube
+        run: |
+          mkdir -p sonar-reports
+          swiftlint --reporter checkstyle > sonar-reports/OSInAppBrowserLib-swiftlint.xml || true
+          
+      - name: Setup SonarQube Scanner
+        uses: warchant/setup-sonar-scanner@v8
+        
+      - name: Send to SonarCloud
+        run: sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            TestResults.xcresult
+            sonar-reports/
+            build/reports/
+            
+      # Slack notification - Uncomment when ready to use
+      # - name: Slack Notification
+      #   if: always()
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     fields: repo,message,commit,author,action,eventName,ref,workflow
+      #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+        
+      - name: Comment Test Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 🧪 Test Results
+
+              ✅ Tests completed successfully!
+              📊 Code Coverage: Report generated and sent to SonarCloud
+
+              Built and tested on:
+              - Xcode ${require('child_process').execSync('xcodebuild -version | head -n 1 | awk \'{print $2}\'').toString().trim()}
+              - iOS Simulator (iPhone 16)
+              - macOS runner: ${{ runner.os }}
+              
+              📋 Check SonarCloud for detailed coverage and quality metrics.`
+            });
