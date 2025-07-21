@@ -13,6 +13,13 @@ jobs:
     name: Run Tests
     runs-on: macos-latest
     
+    env:
+      IOS_SIMULATOR_DEVICE: "iPhone 16"
+      PROJECT_NAME: "OSInAppBrowserLib"                    # Name used for output files
+      SCHEME_NAME: "OSInAppBrowserLib"                     # Xcode scheme to build/test
+      XCODEPROJ_PATH: "OSInAppBrowserLib.xcodeproj"        # Path to .xcodeproj file
+      COVERAGE_TARGET_FILTER: "OSInAppBrowserLib"          # Target name for coverage filtering
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,9 +36,9 @@ jobs:
             gem install xcpretty
           fi
           
-          # Install xcresultparser for SonarQube integration
-          if ! command -v xcresultparser &> /dev/null; then
-            brew install sonarsource/tap/xcresultparser
+          # Install slather for coverage conversion
+          if ! gem list slather -i &> /dev/null; then
+            gem install slather
           fi
           
       - name: Run Unit Tests
@@ -39,37 +46,71 @@ jobs:
           mkdir -p build/reports
           set -o pipefail
           xcodebuild test \
-            -project OSInAppBrowserLib.xcodeproj \
-            -scheme OSInAppBrowserLib \
-            -destination "platform=iOS Simulator,name=iPhone 16" \
+            -project ${{ env.XCODEPROJ_PATH }} \
+            -scheme ${{ env.SCHEME_NAME }} \
+            -destination "platform=iOS Simulator,name=${{ env.IOS_SIMULATOR_DEVICE }}" \
             -configuration Debug \
             -enableCodeCoverage YES \
             -resultBundlePath TestResults.xcresult \
             SKIP_SCRIPT_PHASES=YES \
-            CODE_SIGNING_ALLOWED=NO | xcpretty --report junit --output build/reports/junit.xml
+            CODE_SIGNING_ALLOWED=NO \
+            COMPILER_INDEX_STORE_ENABLE=NO | xcpretty --test --color --report junit --output build/reports/junit.xml
             
-      - name: Generate Code Coverage Report and Convert to SonarQube Format
+      - name: Generate Code Coverage Report for SonarQube
         run: |
           # Display coverage report for logs
           xcrun xccov view --report TestResults.xcresult
           
+          # Extract coverage percentage and save to environment variable
+          coverage_percentage=$(xcrun xccov view --report TestResults.xcresult | grep "${{ env.COVERAGE_TARGET_FILTER }}" | head -1 | grep -o '[0-9]\+\.[0-9]\+%' | head -1)
+          if [ -z "$coverage_percentage" ]; then
+            # Fallback: try to get overall coverage
+            coverage_percentage=$(xcrun xccov view --report TestResults.xcresult | grep -E "^\s*[0-9]+\.[0-9]+%" | head -1 | grep -o '[0-9]\+\.[0-9]\+%')
+          fi
+          
+          if [ -n "$coverage_percentage" ]; then
+            echo "COVERAGE_PERCENTAGE=$coverage_percentage" >> $GITHUB_ENV
+            echo "✅ Code coverage: $coverage_percentage"
+          else
+            echo "COVERAGE_PERCENTAGE=N/A" >> $GITHUB_ENV
+            echo "⚠️ Could not extract coverage percentage"
+          fi
+          
           # Create sonar-reports directory
           mkdir -p sonar-reports
           
-          # Convert XCResult to SonarQube Generic Coverage format
-          xcresultparser --output-format sonarqube \
-            --path TestResults.xcresult \
-            --output sonar-reports/sonarqube-generic-coverage.xml
+          # Use Slather to convert coverage to SonarQube format
+          if slather coverage \
+            --sonarqube-xml \
+            --output-directory sonar-reports \
+            --scheme ${{ env.SCHEME_NAME }} \
+            ${{ env.XCODEPROJ_PATH }}; then
+            
+            # Verify coverage file was generated
+            if [ -f "sonar-reports/sonarqube-generic-coverage.xml" ]; then
+              echo "✅ Coverage converted successfully with Slather"
+              echo "📄 Generated: sonar-reports/sonarqube-generic-coverage.xml"
+            else
+              echo "⚠️ Slather succeeded but output file not found in expected location"
+              echo "📁 Files in sonar-reports:"
+              ls -la sonar-reports/ || echo "Directory doesn't exist"
+            fi
+          else
+            echo "❌ Slather failed to generate coverage report"
+            echo "ℹ️ SonarCloud will run without coverage data"
+            echo "🔍 This is usually due to no test coverage or build issues"
+          fi
           
       - name: Run SwiftLint for SonarQube
         run: |
           mkdir -p sonar-reports
-          swiftlint --reporter checkstyle > sonar-reports/OSInAppBrowserLib-swiftlint.xml || true
+          swiftlint --reporter checkstyle > sonar-reports/${{ env.PROJECT_NAME }}-swiftlint.xml || true
           
       - name: Setup SonarQube Scanner
         uses: warchant/setup-sonar-scanner@v8
         
       - name: Send to SonarCloud
+        id: sonarcloud
         run: sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -97,23 +138,44 @@ jobs:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         
       - name: Comment Test Results
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && always()
         uses: actions/github-script@v7
         with:
           script: |
+            const { execSync } = require('child_process');
+            
+            // Get Xcode version dynamically
+            const xcodeVersion = execSync('xcodebuild -version | head -1', { encoding: 'utf8' }).trim();
+            
+            // Get coverage percentage from environment
+            const coveragePercentage = process.env.COVERAGE_PERCENTAGE || 'N/A';
+            
+            // Check if SonarCloud step succeeded by checking job status
+            const sonarStepSucceeded = '${{ steps.sonarcloud.outcome }}' === 'success';
+            
+            // Dynamic message based on SonarCloud success/failure
+            const sonarMessage = sonarStepSucceeded 
+              ? '☁️ **SonarCloud**: Analysis completed - [View detailed report →](https://sonarcloud.io)'
+              : '⚠️ **SonarCloud**: Upload failed - check workflow logs for details';
+            
+            const nextStepsMessage = sonarStepSucceeded
+              ? '📋 **Next Steps**: Review the SonarCloud analysis for code quality insights and coverage details.'
+              : '📋 **Next Steps**: Coverage data is available in test artifacts. SonarCloud integration needs attention.';
+            
             await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `## 🧪 Test Results
 
-              ✅ Tests completed successfully!
-              📊 Code Coverage: Report generated and sent to SonarCloud
+              ✅ **Tests**: All tests passed successfully!
+              📊 **Code Coverage**: ${coveragePercentage}
+              ${sonarMessage}
 
-              Built and tested on:
-              - Xcode ${require('child_process').execSync('xcodebuild -version | head -n 1 | awk \'{print $2}\'').toString().trim()}
-              - iOS Simulator (iPhone 16)
+              **Environment:**
+              - ${xcodeVersion}
+              - iOS Simulator (${{ env.IOS_SIMULATOR_DEVICE }})
               - macOS runner: ${{ runner.os }}
               
-              📋 Check SonarCloud for detailed coverage and quality metrics.`
+              ${nextStepsMessage}`
             });
