@@ -202,7 +202,8 @@
 				756346612C00F21000685AA3 /* OSIABEngine.swift */,
 				7563465D2C00F21000685AA3 /* OSIABRouter.swift */,
 			);
-			path = OSInAppBrowserLib;
+			name = OSInAppBrowserLib;
+			path = Sources/OSInAppBrowserLib;
 			sourceTree = "<group>";
 		};
 		7575CF6D2BFCEE6F008F3FD0 /* OSInAppBrowserLibTests */ = {
@@ -215,7 +216,8 @@
 				75094A042C1213A3006843E1 /* OSIABWebViewRouterAdapterTests.swift */,
 				75EF1AFA2C13069E005D7164 /* OSIABViewModelTests.swift */,
 			);
-			path = OSInAppBrowserLibTests;
+			name = OSInAppBrowserLibTests;
+			path = Tests/OSInAppBrowserLibTests;
 			sourceTree = "<group>";
 		};
 		7575CF7E2BFCEEEA008F3FD0 /* Helper Files */ = {
