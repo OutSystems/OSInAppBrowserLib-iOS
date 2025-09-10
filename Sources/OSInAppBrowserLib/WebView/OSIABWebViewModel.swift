@@ -38,7 +38,14 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     @Published private(set) var addressLabel: String = ""
     
     private var cancellables = Set<AnyCancellable>()
-    
+
+    #if DEBUG
+    /// Test-only method to set error for unit tests
+    func setErrorForTesting(_ error: Error?) {
+        self.error = error
+    }
+    #endif
+
     /// Constructor method.
     /// - Parameters:
     ///   - url: The current URL being displayed
