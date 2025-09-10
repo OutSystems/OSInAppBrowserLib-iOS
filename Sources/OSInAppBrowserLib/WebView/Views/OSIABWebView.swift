@@ -151,6 +151,7 @@ private struct OSIABTestWebView: View {
     }
 }
 
+@available(*, unavailable)
 struct OSIABWebView_Previews: PreviewProvider {
     static var previews: some View {
         // MARK: - Default Views

@@ -1,12 +1,12 @@
 import SwiftUI
 
-private struct OSIABNavigationButton: View {
+internal struct OSIABNavigationButton: View {
     /// Handler to trigger when the button is pressed.
     private let buttonPressed: () -> Void
     /// The icon to set the button with.
     private let iconName: String
     /// Indicates if the button should appeared as enabled or not.
-    private let isDisabled: Bool
+    internal let isDisabled: Bool
     
     /// Constructor method.
     /// - Parameters:
@@ -88,7 +88,7 @@ struct OSIABNavigationView: View {
                     
                     OSIABNavigationButton(
                         forwardButtonPressed,
-                        iconName: "chevron.forward", 
+                        iconName: "chevron.forward",
                         isDisabled: !forwardButtonEnabled
                     )
                 }
@@ -151,6 +151,7 @@ private struct OSIABTestNavigationView: View {
     }
 }
 
+@available(*, unavailable)
 struct OSIABNavigationView_Previews: PreviewProvider {
     static var previews: some View {
         // Default - Light Mode

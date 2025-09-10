@@ -1,7 +1,6 @@
 import SwiftUI
 
 /// View that manages which view to present, depending if the page load was successful or not or is being loaded.
-@available(iOS 14.0, *)
 struct OSIABWebViewWrapperView: View {
     /// View Model containing all the customisable elements.
     @StateObject private var model: OSIABWebViewModel
@@ -23,12 +22,31 @@ struct OSIABWebViewWrapperView: View {
     }
 }
 
-// MARK: - OSIABViewModel's constructor accelerator.
-private extension OSIABWebViewModel {
-    convenience init(toolbarPosition: OSIABToolbarPosition = .defaultValue) {
+@available(*, unavailable)
+struct OSIABWebViewWrapperView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Default - Light Mode
+        OSIABWebViewWrapperView(makeModel())
+
+        // Default - Dark Mode
+        OSIABWebViewWrapperView(makeModel())
+            .preferredColorScheme(.dark)
+
+        // Bottom Toolbar Defined
+        OSIABWebViewWrapperView(makeModel(toolbarPosition: .bottom))
+
+        // Error View - Light mode
+        OSIABWebViewWrapperView(makeModel(url: "https://outsystems/"))
+
+        // Error View - Dark mode
+        OSIABWebViewWrapperView(makeModel(url: "https://outsystems/"))
+            .preferredColorScheme(.dark)
+    }
+    
+    private static func makeModel(url: String = "https://outsystems.com", toolbarPosition: OSIABToolbarPosition = .defaultValue) -> OSIABWebViewModel {
         let configurationModel = OSIABWebViewConfigurationModel()
-        self.init(
-            url: .init(string: "https://outsystems.com")!,
+        return .init(
+            url: .init(string: url)!,
             webViewConfiguration: configurationModel.toWebViewConfiguration(),
             uiModel: .init(toolbarPosition: toolbarPosition),
             callbackHandler: .init(
@@ -39,43 +57,5 @@ private extension OSIABWebViewModel {
                 onBrowserPageNavigationCompleted: { _ in }
             )
         )
-    }
-
-    convenience init(url: String) {
-        let configurationModel = OSIABWebViewConfigurationModel()
-        self.init(
-            url: .init(string: url)!,
-            webViewConfiguration: configurationModel.toWebViewConfiguration(),
-            uiModel: .init(),
-            callbackHandler: .init(
-                onDelegateURL: { _ in },
-                onDelegateAlertController: { _ in },
-                onBrowserPageLoad: {},
-                onBrowserClosed: { _ in },
-                onBrowserPageNavigationCompleted: { _ in }
-            )
-        )
-    }
-}
-
-@available(iOS 14.0, *)
-struct OSIABWebViewWrapperView_Previews: PreviewProvider {
-    static var previews: some View {
-        // Default - Light Mode
-        OSIABWebViewWrapperView(.init())
-
-        // Default - Dark Mode
-        OSIABWebViewWrapperView(.init())
-            .preferredColorScheme(.dark)
-
-        // Bottom Toolbar Defined
-        OSIABWebViewWrapperView(.init(toolbarPosition: .bottom))
-
-        // Error View - Light mode
-        OSIABWebViewWrapperView(.init(url: "https://outsystems/"))
-
-        // Error View - Dark mode
-        OSIABWebViewWrapperView(.init(url: "https://outsystems/"))
-            .preferredColorScheme(.dark)
     }
 }
