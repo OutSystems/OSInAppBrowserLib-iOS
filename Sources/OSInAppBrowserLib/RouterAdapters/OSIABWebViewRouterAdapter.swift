@@ -121,10 +121,14 @@ private class OSIABWebViewController: UIHostingController<OSIABWebViewWrapperVie
     }
     
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.dismiss(animated: flag, completion: {
+        guard presentedViewController == nil else {
+            return super.dismiss(animated: flag, completion: completion)
+        }
+        
+        super.dismiss(animated: flag) {
             self.dismiss?()
             completion?()
-        })
+        }
     }
 }
 
