@@ -74,6 +74,11 @@ class OSIABWebViewModel: NSObject, ObservableObject {
         self.webView.customUserAgent = customUserAgent
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
+#if DEBUG
+        if #available(iOS 16.4, *) {
+            self.webView.isInspectable = true
+        }
+#endif
         self.setupBindings(uiModel.showURL, uiModel.showToolbar, uiModel.showNavigationButtons)
     }
     
