@@ -186,8 +186,9 @@ class OSIABWebViewModel: NSObject, ObservableObject {
 
 // MARK: - WKNavigationDelegate implementation
 extension OSIABWebViewModel: WKNavigationDelegate {
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        guard let url = navigationAction.request.url, url == navigationAction.request.mainDocumentURL else { return decisionHandler(.cancel) }
+        guard let url = navigationAction.request.url else { return decisionHandler(.cancel) }
         
         // if is an app store, tel, sms, mailto or geo link, let the system handle it, otherwise it fails to load it
         if ["itms-appss", "itms-apps", "tel", "sms", "mailto", "geo"].contains(url.scheme) {
