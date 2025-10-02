@@ -4,12 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixes
+
+- Fix iframe loading issue. [RMET-4517](https://outsystemsrd.atlassian.net/browse/RMET-4517).
+
 ## 2.3.0
 
 ### Features
 
 - Enable WebKit inspector for debugging on iOS 16.4+ in DEBUG builds.
-
 
 ## 2.2.1
 
