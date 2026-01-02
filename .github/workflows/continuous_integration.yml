@@ -32,8 +32,6 @@ jobs:
       
       - name: Unit tests
         run: bundle exec fastlane unit_tests
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       
       - name: Code Coverage
         run: bundle exec fastlane coverage
