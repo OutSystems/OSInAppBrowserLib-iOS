@@ -1,8 +1,11 @@
-Pod::Spec.new do |spec|
-  spec.name                   = 'OSInAppBrowserLib'
-  spec.version                = '2.3.1'
+require 'json'
+package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 
-  spec.summary                = 'The `OSInAppBrowserLib` is a library that provides a web browser view to load a web page within a Mobile Application.'
+Pod::Spec.new do |spec|
+  spec.name                   = package['name']
+  spec.version                = package['version']
+
+  spec.summary                = package['description']
   spec.description            = <<-DESC
   The InAppBrowserLib library behaves as a standard web browser and is useful to load untrusted content without risking your application's security.
   
@@ -18,8 +21,8 @@ Pod::Spec.new do |spec|
   DESC
 
   spec.homepage               = 'https://github.com/OutSystems/OSInAppBrowserLib-iOS'
-  spec.license                = { :type => 'MIT', :file => 'LICENSE' }
-  spec.author                 = { 'OutSystems Mobile Ecosystem' => 'rd.mobileecosystem.team@outsystems.com' }
+  spec.license                = { :type => package['license'], :file => 'LICENSE' }
+  spec.author                 = { package['author'] => package['email'] }
   
   spec.source                 = { :http => "https://github.com/OutSystems/OSInAppBrowserLib-iOS/releases/download/#{spec.version}/OSInAppBrowserLib.zip", :type => "zip" }
   spec.vendored_frameworks    = "OSInAppBrowserLib.xcframework"
