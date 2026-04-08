@@ -1,3 +1,11 @@
+## [2.3.2](https://github.com/OutSystems/OSInAppBrowserLib-iOS/compare/2.3.1...2.3.2) (2026-04-08)
+
+
+### Bug Fixes
+
+* use Xcode 16 instead of 26 ([#45](https://github.com/OutSystems/OSInAppBrowserLib-iOS/issues/45)) ([1e0b419](https://github.com/OutSystems/OSInAppBrowserLib-iOS/commit/1e0b4199b13ccf07e76a20b5023ad250001c7e39))
+* window.open() handling in WKWebView by implementing createWebViewWith delegate ([#47](https://github.com/OutSystems/OSInAppBrowserLib-iOS/issues/47)) ([254327a](https://github.com/OutSystems/OSInAppBrowserLib-iOS/commit/254327a84ee85d3b9b868e9c8ad15717253b2d26))
+
 ## 2.3.1
 
 ### Fixes

@@ -1,6 +1,6 @@
 {
   "name": "OSInAppBrowserLib",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "The `OSInAppBrowserLib` is a library that provides a web browser view to load a web page within a Mobile Application.",
   "author": "OutSystems Mobile Ecosystem",
   "email": "rd.mobileecosystem.team@outsystems.com",
