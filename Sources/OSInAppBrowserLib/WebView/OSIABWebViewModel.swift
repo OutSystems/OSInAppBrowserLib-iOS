@@ -19,6 +19,12 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     
     /// Indicates if first load is already done. This is important in order to trigger the `browserPageLoad` event.
     private var firstLoadDone: Bool = false
+    /// Indicates if a download is in progress, to suppress navigation errors caused by download redirects.
+    private var isDownloadInProgress: Bool = false
+    /// Retains the active WKDownload to prevent it from being deallocated mid-download.
+    private var activeDownload: AnyObject?
+    /// Stores the destination URL for the active download.
+    private var downloadDestinationURL: URL?
     
     /// Custom headers to be used by the WebView.
     private let customHeaders: [String: String]?
@@ -206,6 +212,18 @@ extension OSIABWebViewModel: WKNavigationDelegate {
         }
     }
     
+    @available(iOS 14.5, *)
+    func webView(_ webView: WKWebView, navigationAction: WKNavigationAction, didBecome download: WKDownload) {
+        download.delegate = self
+    }
+
+    @available(iOS 14.5, *)
+    func webView(_ webView: WKWebView, navigationResponse: WKNavigationResponse, didBecome download: WKDownload) {
+        isDownloadInProgress = true
+        activeDownload = download
+        download.delegate = self
+    }
+
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if !firstLoadDone {
             callbackHandler.onBrowserPageLoad()
@@ -225,10 +243,66 @@ extension OSIABWebViewModel: WKNavigationDelegate {
     }
     
     private func handleWebViewNavigationError(_ delegateName: String, error: Error) {
-        print("webView: \(delegateName) - \(error.localizedDescription)")
-        if (error as NSError).code != NSURLErrorCancelled {
+        let nsError = error as NSError
+        if isDownloadInProgress && nsError.code == 102 {
+            isDownloadInProgress = false
+            return
+        }
+        if nsError.code != NSURLErrorCancelled {
             self.error = error
         }
+    }
+}
+
+// MARK: - WKNavigationDelegate (response) implementation
+extension OSIABWebViewModel {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        if navigationResponse.canShowMIMEType {
+            decisionHandler(.allow)
+        } else {
+            if #available(iOS 14.5, *) {
+                decisionHandler(.download)
+            } else {
+                decisionHandler(.cancel)
+            }
+        }
+    }
+}
+
+// MARK: - WKDownloadDelegate implementation
+@available(iOS 14.5, *)
+extension OSIABWebViewModel: WKDownloadDelegate {
+
+    func download(_ download: WKDownload, decideDestinationUsing response: URLResponse, suggestedFilename: String, completionHandler: @escaping (URL?) -> Void) {
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileURL = tempDir.appendingPathComponent(suggestedFilename)
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            try? FileManager.default.removeItem(at: fileURL)
+        }
+        downloadDestinationURL = fileURL
+        completionHandler(fileURL)
+    }
+
+    func downloadDidFinish(_ download: WKDownload) {
+        guard let fileURL = downloadDestinationURL else { return }
+        activeDownload = nil
+        DispatchQueue.main.async {
+            let activityVC = UIActivityViewController(activityItems: [fileURL], applicationActivities: nil)
+            if let rootVC = UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow })?.rootViewController {
+                var topVC = rootVC
+                while let presented = topVC.presentedViewController {
+                    topVC = presented
+                }
+                topVC.present(activityVC, animated: true)
+            }
+        }
+    }
+
+    func download(_ download: WKDownload, didFailWithError error: Error, resumeData: Data?) {
+        activeDownload = nil
     }
 }
 

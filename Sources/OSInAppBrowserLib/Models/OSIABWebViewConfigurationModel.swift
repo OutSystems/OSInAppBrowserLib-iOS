@@ -36,6 +36,16 @@ struct OSIABWebViewConfigurationModel {
         configuration.ignoresViewportScaleLimits = ignoresViewportScaleLimits
         configuration.allowsInlineMediaPlayback = allowsInlineMediaPlayback
         configuration.suppressesIncrementalRendering = suppressesIncrementalRendering
+        let windowOpenScript = WKUserScript(
+            source: """
+            window.open = function(url, target, features) {
+                if (url) { window.location.href = url; }
+            };
+            """,
+            injectionTime: .atDocumentStart,
+            forMainFrameOnly: false
+        )
+        configuration.userContentController.addUserScript(windowOpenScript)
         return configuration
     }
 }
