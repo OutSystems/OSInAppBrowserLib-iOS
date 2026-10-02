@@ -51,13 +51,7 @@ public class OSIABWebViewRouterAdapter: NSObject, OSIABRouter {
         )
         
         let dismissCallback: () -> Void = { self.callbackHandler.onBrowserClosed(true) }
-        let hostingController: UIViewController
-        
-        if #available(iOS 14.0, *) {
-            hostingController = OSIABWebViewController(rootView: .init(viewModel), dismiss: dismissCallback)
-        } else {
-            hostingController = OSIABWebView13Controller(rootView: .init(viewModel), dismiss: dismissCallback)
-        }
+        let hostingController: UIViewController = OSIABWebViewController(rootView: .init(viewModel), dismiss: dismissCallback)
         hostingController.modalPresentationStyle = options.modalPresentationStyle
         hostingController.modalTransitionStyle = options.modalTransitionStyle
         hostingController.presentationController?.delegate = self
@@ -101,7 +95,6 @@ extension OSIABWebViewRouterAdapter: UIAdaptivePresentationControllerDelegate {
 }
 
 /// A subclass for `UIHostingController` where it's possible to delegate the `dismiss` call to its callers.
-@available(iOS 14.0, *)
 private class OSIABWebViewController: UIHostingController<OSIABWebViewWrapperView> {
     /// Callback to trigger when the view controller is closed.
     let dismiss: (() -> Void)?
@@ -129,33 +122,5 @@ private class OSIABWebViewController: UIHostingController<OSIABWebViewWrapperVie
             self.dismiss?()
             completion?()
         }
-    }
-}
-
-/// A subclass for `UIHostingController` where it's possible to delegate the `dismiss` call to its callers.
-@available(iOS, deprecated: 14.0, message: "Use OSIABWebViewController for iOS 14.0+")
-private class OSIABWebView13Controller: UIHostingController<OSIABWebView13WrapperView> {
-    /// Callback to trigger when the view controller is closed.
-    let dismiss: (() -> Void)?
-    
-    /// Constructor method.
-    /// - Parameters:
-    ///   - rootView: The root view of the SwiftUI view hierarchy that you want to manage using the hosting view controller.
-    ///   - dismiss: The callback to trigger when the view controller is dismissed.
-    init(rootView: OSIABWebView13WrapperView, dismiss: (() -> Void)?) {
-        self.dismiss = dismiss
-        super.init(rootView: rootView)
-    }
-    
-    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
-        self.dismiss = nil
-        super.init(coder: aDecoder)
-    }
-    
-    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        super.dismiss(animated: flag, completion: {
-            self.dismiss?()
-            completion?()
-        })
     }
 }

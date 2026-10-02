@@ -1,7 +1,6 @@
 import SwiftUI
 
 /// View that manages which view to present, depending if the page load was successful or not or is being loaded.
-@available(iOS 14.0, *)
 struct OSIABWebViewWrapperView: View {
     /// View Model containing all the customisable elements.
     @StateObject private var model: OSIABWebViewModel
@@ -58,7 +57,6 @@ private extension OSIABWebViewModel {
     }
 }
 
-@available(iOS 14.0, *)
 struct OSIABWebViewWrapperView_Previews: PreviewProvider {
     static var previews: some View {
         // Default - Light Mode
