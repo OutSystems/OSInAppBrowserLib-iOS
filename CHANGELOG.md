@@ -1,17 +1,3 @@
-# [3.0.0](https://github.com/OutSystems/OSInAppBrowserLib-iOS/compare/2.3.2...3.0.0) (2026-10-07)
-
-
-### Features
-
-* update deployment target to iOS 15 ([#48](https://github.com/OutSystems/OSInAppBrowserLib-iOS/issues/48)) ([6a962cf](https://github.com/OutSystems/OSInAppBrowserLib-iOS/commit/6a962cf8832986c50f652d41b7b2a13dcbd2fc67))
-
-
-### BREAKING CHANGES
-
-* Any consumer on lower deployment targets than iOS 15 will need to bump their deployment target to iOS 15.
-
-* chore: sync tests deployment target with lib's
-
 ## [2.3.2](https://github.com/OutSystems/OSInAppBrowserLib-iOS/compare/2.3.1...2.3.2) (2026-04-08)
 
 
