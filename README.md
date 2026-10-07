@@ -24,6 +24,16 @@ This library is to be used by the InAppBrowser Plugin for [OutSystems' Cordova P
 
 ## Usage
 
+> Replace `${version to use}` below with the version you want to use. Check the [Releases page](https://github.com/OutSystems/OSInAppBrowserLib-iOS/releases) for available versions.
+
+The library is also available as a Swift Package. Add the following to your `Package.swift` file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/OutSystems/OSInAppBrowserLib-iOS.git", from: "${version to use}")
+]
+```
+
 The library is available on CocoaPods as `OSInAppBrowserLib`. The following is an example of how to insert it into a Cordova plugin (through the `plugin.xml` file).
 
 ```xml
