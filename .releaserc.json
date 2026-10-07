@@ -7,7 +7,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "bash ./scripts/update_xcodeproj_version.sh ${nextRelease.version} \"OSInAppBrowserLib.xcodeproj/project.pbxproj\" && bash ./scripts/update_readme_version.sh ${nextRelease.version} \"OSInAppBrowserLib\" \"README.md\" && bash ./scripts/build_framework.sh \"OSInAppBrowserLib\" \"LICENSE\""
+        "prepareCmd": "bash ./scripts/update_xcodeproj_version.sh ${nextRelease.version} \"OSInAppBrowserLib.xcodeproj/project.pbxproj\" && bash ./scripts/build_framework.sh \"OSInAppBrowserLib\" \"LICENSE\""
       }
     ],
     "@semantic-release/changelog",
