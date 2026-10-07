@@ -36,9 +36,7 @@ class OSIABWebViewModel: NSObject, ObservableObject {
     
     /// The current address label being displayed on the screen. Empty string indicates that the address will not be displayed.
     @Published private(set) var addressLabel: String = ""
-    
-    private var cancellables = Set<AnyCancellable>()
-    
+
     /// Constructor method.
     /// - Parameters:
     ///   - url: The current URL being displayed
@@ -114,47 +112,22 @@ class OSIABWebViewModel: NSObject, ObservableObject {
             
     /// Setups the combine bindings, so that the Published properties can be filled automatically and reactively.
     private func setupBindings(_ showURL: Bool, _ showToolbar: Bool, _ showNavigationButtons: Bool) {
-        if #available(iOS 14.0, *) {
-            webView.publisher(for: \.isLoading)
-                .assign(to: &$isLoading)
-            webView.publisher(for: \.url)
-                .compactMap { $0 }
-                .assign(to: &$url)
-            if showToolbar {
-                if showNavigationButtons {
-                    webView.publisher(for: \.canGoBack)
-                        .assign(to: &$backButtonEnabled)
-                    
-                    webView.publisher(for: \.canGoForward)
-                        .assign(to: &$forwardButtonEnabled)
-                }
-                if showURL {
-                    $url.map(\.absoluteString)
-                        .assign(to: &$addressLabel)
-                }
+        webView.publisher(for: \.isLoading)
+            .assign(to: &$isLoading)
+        webView.publisher(for: \.url)
+            .compactMap { $0 }
+            .assign(to: &$url)
+        if showToolbar {
+            if showNavigationButtons {
+                webView.publisher(for: \.canGoBack)
+                    .assign(to: &$backButtonEnabled)
+
+                webView.publisher(for: \.canGoForward)
+                    .assign(to: &$forwardButtonEnabled)
             }
-        } else {
-            webView.publisher(for: \.isLoading)
-                .assign(to: \.isLoading, on: self)
-                .store(in: &cancellables)
-            webView.publisher(for: \.url)
-                .compactMap { $0 }
-                .assign(to: \.url, on: self)
-                .store(in: &cancellables)
-            if showToolbar {
-                if showNavigationButtons {
-                    webView.publisher(for: \.canGoBack)
-                        .assign(to: \.backButtonEnabled, on: self)
-                        .store(in: &cancellables)
-                    webView.publisher(for: \.canGoForward)
-                        .assign(to: \.forwardButtonEnabled, on: self)
-                        .store(in: &cancellables)
-                }
-                if showURL {
-                    $url.map(\.absoluteString)
-                        .assign(to: \.addressLabel, on: self)
-                        .store(in: &cancellables)
-                }
+            if showURL {
+                $url.map(\.absoluteString)
+                    .assign(to: &$addressLabel)
             }
         }
     }
