@@ -254,7 +254,7 @@ final class OSIABViewModelTests: XCTestCase {
         let alertMessage = "Body"
         var alertController: UIAlertController?
         let sut = makeSUT(url, onDelegateAlertController: { alertController = $0 })
-        sut.webView(sut.webView, runJavaScriptAlertPanelWithMessage: alertMessage, initiatedByFrame: .init(), completionHandler: {})
+        sut.webView(sut.webView, runJavaScriptAlertPanelWithMessage: alertMessage, initiatedByFrame: OSIABFrameInfoStub.shared, completionHandler: {})
         XCTAssertEqual(alertController?.message, alertMessage)
         XCTAssertEqual(alertController?.actions.count, 1)
     }
@@ -263,7 +263,7 @@ final class OSIABViewModelTests: XCTestCase {
         let alertMessage = "Body"
         var alertController: UIAlertController?
         let sut = makeSUT(url, onDelegateAlertController: { alertController = $0 })
-        sut.webView(sut.webView, runJavaScriptConfirmPanelWithMessage: alertMessage, initiatedByFrame: .init()) { _ in }
+        sut.webView(sut.webView, runJavaScriptConfirmPanelWithMessage: alertMessage, initiatedByFrame: OSIABFrameInfoStub.shared) { _ in }
         XCTAssertEqual(alertController?.message, alertMessage)
         XCTAssertEqual(alertController?.actions.count, 2)
     }
@@ -273,7 +273,7 @@ final class OSIABViewModelTests: XCTestCase {
         let defaultText = "Some random text"
         var alertController: UIAlertController?
         let sut = makeSUT(url, onDelegateAlertController: { alertController = $0 })
-        sut.webView(sut.webView, runJavaScriptTextInputPanelWithPrompt: alertMessage, defaultText: defaultText, initiatedByFrame: .init()) { _ in }
+        sut.webView(sut.webView, runJavaScriptTextInputPanelWithPrompt: alertMessage, defaultText: defaultText, initiatedByFrame: OSIABFrameInfoStub.shared) { _ in }
         XCTAssertEqual(alertController?.message, alertMessage)
         XCTAssertEqual(alertController?.actions.count, 2)
         XCTAssertEqual(alertController?.textFields?.first?.text, defaultText)
